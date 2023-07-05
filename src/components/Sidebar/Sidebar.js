@@ -15,7 +15,7 @@ function Sidebar(){
 
   return(
 
-    <div className="sidebar">
+    <div className="sidebar" style={{backgroundColor: "#e3e3e3"}}>
       <SidebarLink text="Home" Icon={Home} onClick={() => nav('/home')} />
       <SidebarLink text="Explore" Icon={Search} onClick={() => nav('/explore')} />
       <SidebarLink text="Lists" Icon={ListAlt} onClick={() => nav('/lists')} />
@@ -23,9 +23,9 @@ function Sidebar(){
       <SidebarLink text="Messages" Icon={MailOutline} onClick={() => nav('/messages')} />
       <SidebarLink text="Profile" Icon={PermIdentity} onClick={() => nav('/profile')} />
       <SidebarLink text="Bookmarks" Icon={BookmarkBorder} onClick={() => nav('/bookmarks')} />
-      <Button id="tweet">
-        Tweet
-      </Button>
+      {/*<Button id="tweet">*/}
+      {/*  Tweet*/}
+      {/*</Button>*/}
     </div>
   );
 }

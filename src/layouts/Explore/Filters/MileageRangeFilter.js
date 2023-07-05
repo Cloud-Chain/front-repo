@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Slider, Typography, TextField } from '@mui/material';
 
 const MileageRangeFilter = () => {
-  const [mileageRange, setMileageRange] = useState([0, 1000000000]); // Initial range: 0 to 1 billion (in kilometers)
+  const [mileageRange, setMileageRange] = useState([0, 300000]); // Initial range: 0 to 1 billion (in kilometers)
   const minMileage = mileageRange[0];
   const maxMileage = mileageRange[1];
 
@@ -22,17 +22,9 @@ const MileageRangeFilter = () => {
     setMileageRange([mileageRange[0], newMaxMileage]);
   };
 
-  const valueLabelFormat = value => {
-    const units = ['', '만', '억', '조', '경']; // Units in Korean
-    let magnitude = 0;
-
-    while (value >= 10000) {
-      value /= 10000;
-      magnitude++;
-    }
-
-    const formattedValue = magnitude >= 2 ? value.toFixed(2) : Math.round(value);
-    return `${formattedValue}${units[magnitude]}KM`;
+  const valueLabelFormat = (value) => {
+    const formattedValue = (value / 1000).toFixed(0); // Divide by 1000 and round to 1 decimal place
+    return `${formattedValue}KM`;
   };
 
   return (
@@ -44,10 +36,7 @@ const MileageRangeFilter = () => {
         alignItems: 'center',
       }}
     >
-      <div style={{ width: 800 }}>
-        <Typography id="mileage-range-slider" gutterBottom>
-          Mileage Range
-        </Typography>
+      <div style={{ width: '95%' }}>
         <Slider
           value={mileageRange}
           onChange={handleSliderChange}
@@ -55,19 +44,19 @@ const MileageRangeFilter = () => {
           aria-labelledby="mileage-range-slider"
           min={0}
           max={300000}
-          step={1}
+          step={1000}
           valueLabelDisplay="on"
           valueLabelFormat={value => valueLabelFormat(value)}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: 800 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '95%'}}>
         <TextField
           label="Minimum Mileage (KM)"
           value={minMileage}
           onChange={handleMinMileageChange}
           type="number"
           size="small"
-          style={{ width: 200 }}
+          style={{ width:200, marginLeft : 5, marginRight:5 }}
           inputProps={{ min: 0, max: maxMileage, step: 1 }}
           InputLabelProps={{
             shrink: true,
@@ -79,7 +68,7 @@ const MileageRangeFilter = () => {
           onChange={handleMaxMileageChange}
           type="number"
           size="small"
-          style={{ width: 200 }}
+          style={{ width:200, marginLeft : 5, marginRight:5 }}
           inputProps={{ min: minMileage, max: 300000, step: 1 }}
           InputLabelProps={{
             shrink: true,

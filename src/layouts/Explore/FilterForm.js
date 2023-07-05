@@ -1,45 +1,87 @@
-import React from 'react';
-import { Paper, Grid, Divider } from '@mui/material';
-import PeriodRangeFilter from './Filters/PeriodRangeFilter'
-import PriceRangeFilter from './Filters/PriceRangeFilter'
-import MileageRangeFilter from './Filters/MileageRangeFilter'
+import React, { useState } from 'react';
+import { Paper, Grid, Button, FormControl, Box } from '@mui/material';
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import ModelFilter from './Filters/ModelFilter';
+import AssignorFilter from './Filters/AssignorFilter';
+import PeriodRangeFilter from './Filters/PeriodRangeFilter';
+import PriceRangeFilter from './Filters/PriceRangeFilter';
+import MileageRangeFilter from './Filters/MileageRangeFilter';
 
 const FilterForm = () => {
+  const [filters, setFilters] = useState({
+    model: '',
+    assignor: '',
+    periodRange: '',
+    priceRange: '',
+    mileageRange: '',
+  });
+
+  const handleSearch = (event) => {
+    setFilters((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // try {
+    //   // Change 'YOUR_API_URL' to your actual API endpoint
+    //   const response = await axios.post('YOUR_API_URL', filters);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
   return (
     <Paper
       style={{
-        margin: 40,
+        margin: 20,
         padding: 10,
+        borderRadius: 10,
+        border: '2px solid', // Set the border thickness here
+        borderColor: 'grey'
       }}
       elevation={3} // Add a slight shadow
     >
-      <Grid container direction="column" spacing={2} alignItems="center">
-        <Grid item>
-          <PeriodRangeFilter />
+      <FormControl onSubmit={handleSubmit}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={11}>
+            <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
+              <ModelFilter onChange={handleSearch} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box border={2} borderColor="blue" borderRadius={4} p={1} bgcolor="#1A67C8"> {/* Reduced padding from p={2} to p={1} */}
+              <IconButton type="submit" aria-label="search">
+                <SearchIcon style={{ fill: "white" }} />
+              </IconButton>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
+              <AssignorFilter onChange={handleSearch} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
+              <PeriodRangeFilter onChange={handleSearch} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
+              <PriceRangeFilter onChange={handleSearch} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
+              <MileageRangeFilter onChange={handleSearch} />
+            </Box>
+          </Grid>
         </Grid>
-        <Divider
-          sx={{
-            width: '100%',
-            height: '0.5px',
-            backgroundColor: '#D3D3D3'
-          }}
-          orientation="horizontal"
-        />
-        <Grid item>
-          <PriceRangeFilter />
-        </Grid>
-        <Divider
-          sx={{
-            width: '100%',
-            height: '0.5px',
-            backgroundColor: '#D3D3D3',
-          }}
-          orientation="horizontal"
-        />
-        <Grid item>
-          <MileageRangeFilter />
-        </Grid>
-      </Grid>
+      </FormControl>
     </Paper>
   );
 };

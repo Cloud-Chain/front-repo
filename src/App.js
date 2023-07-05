@@ -8,23 +8,6 @@ import SearchDashboard from './layouts/Explore/SearchDashboard';
 import TransactionStatement from "./layouts/Transactions/TransactionStatement";
 import Sidebar from "./components/Sidebar/Sidebar";
 
-const carData = [
-  {
-    id: 1,
-    transactionDate: '2023-07-01',
-    name: 'Car A',
-    amount: 5000,
-    distanceDriven: '50,000 miles',
-  },
-  {
-    id: 2,
-    transactionDate: '2023-06-28',
-    name: 'Car B',
-    amount: 8000,
-    distanceDriven: '80,000 miles',
-  },
-  // Add more car objects as needed
-];
 const transactionData = {
   receiptNumber: 'receipt number',
   receiptDate: 'receipt date',
@@ -64,7 +47,7 @@ const App = () => {
         <Sidebar/>
         <div className="content">
           <Routes>
-            <Route exact path={"/explore"} element={<SearchDashboard cars={carData}/>} />
+            <Route exact path={"/explore"} element={<SearchDashboard />} />
             <Route exact path={"/specs"} element={<TransactionStatement transactionData={transactionData}/>} />
 
           </Routes>
