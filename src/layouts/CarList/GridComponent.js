@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/data.json';
+import { useNavigate } from 'react-router-dom';
 
 function GridComponent() {
+  const navigate = useNavigate();
   const [data, setData] = useState(jsonData);
 
   const columns = [
@@ -14,8 +16,13 @@ function GridComponent() {
     { field: 'period', headerName: '업로드 일자', flex: 1.5 },
   ];
 
+  const handleRowClick = (params) => {
+    const id = params.row.id;
+    navigate(`/buy/${id}`);
+  };
+
   return (
-    <div style={{border:'2px solid', borderColor: '#888888', borderRadius: 10 }}>
+    <div style={{ border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
       <DataGrid
         rows={data}
         columns={columns}
@@ -26,6 +33,7 @@ function GridComponent() {
           ...data.initialState,
           pagination: { paginationModel: { pageSize: 5 } },
         }}
+        onRowClick={handleRowClick}
         style={{ width: '100%' }}
       />
     </div>
