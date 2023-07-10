@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Slider, Typography, TextField } from '@mui/material';
 
 const MileageRangeFilter = () => {
-  const [mileageRange, setMileageRange] = useState([0, 300000]); // Initial range: 0 to 1 billion (in kilometers)
+  const [mileageRange, setMileageRange] = useState([0, 300000]); // Initial range: 0 to 300000 (in kilometers)
   const minMileage = mileageRange[0];
   const maxMileage = mileageRange[1];
 
@@ -12,19 +12,23 @@ const MileageRangeFilter = () => {
 
   const handleMinMileageChange = (event) => {
     let newMinMileage = parseInt(event.target.value);
-    newMinMileage = isNaN(newMinMileage) ? 0 : newMinMileage; // No need to multiply by 1000000 for mileage
+    newMinMileage = isNaN(newMinMileage) ? 0 : newMinMileage;
     setMileageRange([newMinMileage, mileageRange[1]]);
   };
 
   const handleMaxMileageChange = (event) => {
     let newMaxMileage = parseInt(event.target.value);
-    newMaxMileage = isNaN(newMaxMileage) ? 0 : newMaxMileage; // No need to multiply by 1000000 for mileage
+    newMaxMileage = isNaN(newMaxMileage) ? 0 : newMaxMileage;
     setMileageRange([mileageRange[0], newMaxMileage]);
   };
 
   const valueLabelFormat = (value) => {
-    const formattedValue = (value / 1000).toFixed(0); // Divide by 1000 and round to 1 decimal place
-    return `${formattedValue}KM`;
+    if (value < 10000) {
+      return `${value}KM`;
+    } else {
+      const tenThousandUnits = Math.floor(value / 10000);
+      return `${tenThousandUnits}만KM`;
+    }
   };
 
   return (
@@ -79,4 +83,4 @@ const MileageRangeFilter = () => {
   );
 };
 
-export default MileageRangeFilter
+export default MileageRangeFilter;
