@@ -249,7 +249,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
           </Box>          
           <Stack direction="row" spacing={2} justifyContent="flex-end" marginTop={2}>
             <Button type="submit" variant="contained" color="success" style={{width: 150}}>
-              제출
+              요청 전송
             </Button>
             <Button onClick={handleClose} style={{width: 150, border: '1px solid'}} >닫기</Button>
           </Stack>
