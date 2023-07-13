@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 
   },
   description: {
-    width: '90%',
+    width: '100%',
     height: 100,
     display: 'flex',
     flexDirection: 'column',
@@ -105,7 +105,7 @@ const TransactionProcess = () => {
             <div className={classes.description}>
                 <Typography className={classes.processTitle}>대시보드 업로드</Typography>
                 <hr style={{width : '100%'}}/>
-                <Typography>검수가 완료된 차량은 <br/>구매 대시보드에 업로드됩니다.</Typography>
+                <Typography>검수가 완료된 차량은 구매 대시보드에 업로드됩니다.</Typography>
             </div>
           </div>
           <div className={classes.line} />
@@ -115,7 +115,7 @@ const TransactionProcess = () => {
             <div className={classes.description}>
                 <Typography className={classes.processTitle}>구매자와 일정 조정</Typography>
                 <hr style={{width : '100%'}}/>
-                <Typography>구매자와 잔금 지불 및 차량 인도<br/>일정을 조정합니다.</Typography>
+                <Typography>구매자와 잔금 지불 및 차량 인도 일정을 조정합니다.</Typography>
             </div>
           </div>
           <div className={classes.line} />
@@ -125,7 +125,7 @@ const TransactionProcess = () => {
             <div className={classes.description}>
                 <Typography className={classes.processTitle}>거래 수행</Typography>
                 <hr style={{width : '100%'}}/>
-                <Typography>조정이 완료되면 <br/> 자동적으로 거래가 성사됩니다.</Typography>
+                <Typography>조정이 완료되면 자동적으로 거래가 성사됩니다.</Typography>
             </div>
           </div>
         </Box>

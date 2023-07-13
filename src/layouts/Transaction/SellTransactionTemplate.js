@@ -17,8 +17,6 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
     vehicleModelName: '',
     vehicleIdentificationNumber: '',
     transactionAmount: '',
-    vehicleDeliveryDate: dayjs(),
-    vehicleDeliveryAddress: '',
     mileage: '',
   });
   const [inspection, setInspection] = useState({
@@ -76,17 +74,17 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
           padding: '20px',
           borderRadius: '8px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.8)', // Adjusted boxShadow for a more three-dimensional look
-          width: '80vh', // Adjust the width as needed
-          maxHeight: '80vh', // Adjust the max height as needed
+          width: '90vh', // Adjust the width as needed
+          maxHeight: '90vh', // Adjust the max height as needed
           overflowY: 'auto',
         }}
       >
-        <h2 id="modal-title">판매 요청 명세서</h2>
+        <h2 id="modal-title">판매 명세서</h2>
         <hr/>
         <form onSubmit={handleSubmit}>
           {/* Assignor Fields */}
           <Box marginBottom={2}>
-            <h3>판매자 정보</h3>
+            <h3 style={{margin:'0px'}}>판매자 정보</h3>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
@@ -126,7 +124,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
           </Box>
           {/* Transaction Details Fields */}
           <Box marginBottom={2}>
-            <h3>차량 정보</h3>
+            <h3 style={{margin:'0px'}}>차량 정보</h3>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
@@ -184,34 +182,6 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                 }
               />
             </FormControl>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                  <FormControl fullWidth margin="normal">
-                    <TextField
-                      label="차량 인도 주소"
-                      value={transactionDetails.vehicleDeliveryAddress}
-                      onChange={(e) =>
-                        handleTransactionDetailsChange('vehicleDeliveryAddress', e.target.value)
-                      }
-                    >
-                    </TextField>
-                  </FormControl>
-                </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDateTimePicker
-                      label="차량 인도 가능일"
-                      value={transactionDetails.vehicleDeliveryDate}
-                      onChange={(newValue) =>
-                        handleInspectionChange('vehicleDeliveryDate', newValue)
-                      }
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid>
-          </Grid>
           </Box>
           <Box marginBottom={2}>
           <h3>검수 요청</h3>
@@ -249,7 +219,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
           </Box>          
           <Stack direction="row" spacing={2} justifyContent="flex-end" marginTop={2}>
             <Button type="submit" variant="contained" color="success" style={{width: 150}}>
-              요청 전송
+              요청
             </Button>
             <Button onClick={handleClose} style={{width: 150, border: '1px solid'}} >닫기</Button>
           </Stack>
