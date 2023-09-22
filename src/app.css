@@ -5,4 +5,5 @@
     flex-grow: 1;
     padding: 20px;
     box-shadow: 0 0 6px hsl(210 14% 90%);
+    overflow: scroll;
 }
