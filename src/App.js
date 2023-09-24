@@ -13,7 +13,6 @@ import SignUp from "./layouts/Profile/SignUp";
 import Album from "./layouts/Main/Album";
 import InspectionDashboard from "./layouts/CarInspection/InspectionDashboard";
 import Navbar from 'components/Navbar/Navbar';
-import Widget from 'components/Widget/Widget';
 const theme = createTheme();
 
 const App = () => {
@@ -21,7 +20,6 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <div className="app-container">
         <Sidebar/>
-        
         <div className="content">
           <Navbar/>
           <Routes>
@@ -32,7 +30,7 @@ const App = () => {
             <Route exact path="/profile" element={< Profile/>} />
             <Route exact path="/signin" element={< SignIn/>} />
             <Route exact path="/signup" element={< SignUp/>} />
-            <Route exact path="/ix" element={InspectionDashboard}/>
+            <Route exact path="/ix" element={<InspectionDashboard/>}/>
           </Routes>
         </div>
       </div>

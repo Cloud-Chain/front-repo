@@ -14,6 +14,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Home, Search, NotificationsNone, MailOutline, BookmarkBorder, ListAlt, PermIdentity } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 
 
 const Sidebar = () => {
@@ -47,44 +48,25 @@ const Sidebar = () => {
                 <span>차량 판매</span>
               </li>
             </Link>
+            <Link to="/ix" style={{ textDecoration: "none"}}>
+                <li>
+                    <EngineeringIcon className="icon" />
+                    <span>차량 검수</span>
+                </li>
+            </Link>
+            <p className="title">Community</p>
             <li>
-              <CreditCardIcon className="icon" />
-              <span>Orders</span>
-            </li>
-            <li>
-              <LocalShippingIcon className="icon" />
-              <span>Delivery</span>
-            </li>
-            <p className="title">USEFUL</p>
-            <li>
-              <InsertChartIcon className="icon" />
-              <span>Stats</span>
-            </li>
-            <li>
-              <NotificationsNoneIcon className="icon" />
-              <span>Notifications</span>
-            </li>
-            <p className="title">SERVICE</p>
-            <li>
-              <SettingsSystemDaydreamOutlinedIcon className="icon" />
-              <span>System Health</span>
-            </li>
-            <li>
-              <PsychologyOutlinedIcon className="icon" />
-              <span>Logs</span>
-            </li>
-            <li>
-              <SettingsApplicationsIcon className="icon" />
-              <span>Settings</span>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>리뷰 조회</span>
             </li>
             <p className="title">USER</p>
             <li>
               <AccountCircleOutlinedIcon className="icon" />
-              <span>Profile</span>
+              <span>내 프로필</span>
             </li>
             <li>
               <ExitToAppIcon className="icon" />
-              <span>Logout</span>
+              <span>로그아웃</span>
             </li>
           </ul>
         </div>
