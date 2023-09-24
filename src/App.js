@@ -11,7 +11,9 @@ import Profile from "./layouts/Profile/Profile"
 import SignIn from "./layouts/Profile/SignIn";
 import SignUp from "./layouts/Profile/SignUp";
 import Album from "./layouts/Main/Album";
-
+import InspectionDashboard from "./layouts/CarInspection/InspectionDashboard";
+import Navbar from 'components/Navbar/Navbar';
+import Widget from 'components/Widget/Widget';
 const theme = createTheme();
 
 const App = () => {
@@ -19,7 +21,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <div className="app-container">
         <Sidebar/>
+        
         <div className="content">
+          <Navbar/>
           <Routes>
             <Route exact path="/home" element={< Album/>} />
             <Route exact path={"/buy"} element={<SearchDashboard />} />
@@ -28,6 +32,7 @@ const App = () => {
             <Route exact path="/profile" element={< Profile/>} />
             <Route exact path="/signin" element={< SignIn/>} />
             <Route exact path="/signup" element={< SignUp/>} />
+            <Route exact path="/ix" element={InspectionDashboard}/>
           </Routes>
         </div>
       </div>
