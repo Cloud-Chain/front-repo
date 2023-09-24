@@ -13,15 +13,27 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
   });
 
   const [transactionDetails, setTransactionDetails] = useState({
+    transactionState: 'SellerRequest',
     vehicleRegistrationNumber: '',
+    newVehicleRegistrationNumber: '',
     vehicleModelName: '',
     vehicleIdentificationNumber: '',
+    transactionDate: '',
     transactionAmount: '',
-    mileage: '',
+    balancePaymentDate: '',
+    vehicleDeliveryDate: '',
+    vehicleDeliveryAddress:'',
+    mileage: 0,
   });
-  const [inspection, setInspection] = useState({
-    inspectionOffice: '',
-    inspectionDate: dayjs(),
+  const [vehicleBasicInfo, setVehicleBasicInfo] = useState({
+    vehicleIdentificationNumber: '',
+    vehicleModelName: '',
+    vehicleRegistrationNumber: '',
+    gearboxType: '',
+    fuelUsed: '',
+    mileage: 0,
+    color : "",
+    options: ""
   });
 
   const handleSubmit = (event) => {
@@ -29,7 +41,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
     const data = {
       assignor,
       transactionDetails,
-      inspection,
+      vehicleBasicInfo,
     };
     console.log(data);
     // Reset state here if necessary
@@ -49,9 +61,9 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
       [field]: value,
     }));
   };
-  const handleInspectionChange = (field, value) => {
-    setInspection((prevInspection) => ({
-      ...prevInspection,
+  const handleVehicleBasicInfoChange = (field, value) => {
+    setVehicleBasicInfo((prevVehicleBasicInfo) => ({
+      ...prevVehicleBasicInfo,
       [field]: value,
     }));
   };
@@ -131,8 +143,10 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                   <TextField
                     label="차량 번호"
                     value={transactionDetails.vehicleRegistrationNumber}
-                    onChange={(e) =>
-                      handleTransactionDetailsChange('vehicleRegistrationNumber', e.target.value)
+                    onChange={(e) =>{
+                        handleTransactionDetailsChange('vehicleRegistrationNumber', e.target.value)
+                        handleVehicleBasicInfoChange('vehicleRegistrationNumber', e.target.value)
+                      }
                     }
                   />
               </FormControl>
@@ -142,8 +156,10 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                   <TextField
                     label="모델명"
                     value={transactionDetails.vehicleModelName}
-                    onChange={(e) =>
-                      handleTransactionDetailsChange('vehicleModelName', e.target.value)
+                    onChange={(e) =>{
+                        handleTransactionDetailsChange('vehicleModelName', e.target.value)
+                        handleVehicleBasicInfoChange('vehicleModelName', e.target.value)
+                      }
                     }
                   />
                 </FormControl>
@@ -153,10 +169,12 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
               <Grid item xs={6}>
                   <FormControl fullWidth margin="normal">
                   <TextField
-                    label="차대번호"
+                    label="차량 식별 번호"
                     value={transactionDetails.vehicleIdentificationNumber}
-                    onChange={(e) =>
-                      handleTransactionDetailsChange('vehicleIdentificationNumber', e.target.value)
+                    onChange={(e) => {
+                        handleTransactionDetailsChange('vehicleIdentificationNumber', e.target.value)
+                        handleVehicleBasicInfoChange('vehicleIdentificationNumber', e.target.value)
+                      }
                     }
                   />
                 </FormControl>
@@ -166,8 +184,10 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                   <TextField
                     label="주행거리"
                     value={transactionDetails.mileage}
-                    onChange={(e) =>
-                      handleTransactionDetailsChange('mileage', e.target.value)
+                    onChange={(e) =>{
+                        handleTransactionDetailsChange('mileage', e.target.value)
+                        handleVehicleBasicInfoChange('mileage', e.target.value)
+                      }
                     }
                   />
                </FormControl>
@@ -184,38 +204,57 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
             </FormControl>
           </Box>
           <Box marginBottom={2}>
-          <h3>검수 요청</h3>
-          <Grid container spacing={2}>
-              <Grid item xs={6}>
+          <h3>검수 요청 정보</h3>
+          <Grid container spacing={3}>
+              <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">
                   <TextField
-                    label="검수 지점"
+                    label="기어 종류"
                     select
-                    value={inspection.inspectionOffice}
-                    onChange={(e) => handleInspectionChange('inspectionOffice', e.target.value)}
+                    value={vehicleBasicInfo.gearboxType}
+                    onChange={(e) => handleVehicleBasicInfoChange('gearboxType', e.target.value)}
                   >
-                    <MenuItem value="seoul">서울 지점</MenuItem>
-                    <MenuItem value="daegeon">대전 지점</MenuItem>
-                    <MenuItem value="daegu">대구 지점</MenuItem>
-                    <MenuItem value="pusan">부산 지점</MenuItem>  
+                    <MenuItem value="manual">수동 기어</MenuItem>
+                    <MenuItem value="automatic">자동 기어</MenuItem>
                   </TextField>
-              </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDateTimePicker
-                      label="검수 일자"
-                      value={inspection.inspectionDate}
-                      onChange={(newValue) =>
-                        handleInspectionChange('inspectionDate', newValue)
-                      }
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
                 </FormControl>
               </Grid>
-          </Grid>         
+              <Grid item xs={4}>
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    label="사용 연료 종류"
+                    select
+                    value={vehicleBasicInfo.fuelUsed}
+                    onChange={(e) => handleVehicleBasicInfoChange('fuelUsed', e.target.value)}
+                  >
+                    <MenuItem value="gasoline">휘발유</MenuItem>
+                    <MenuItem value="diesel">경유</MenuItem>
+                    <MenuItem value="lpg">LPG</MenuItem>
+                    <MenuItem value="cng">천연가스</MenuItem>
+                    <MenuItem value="electric">전기</MenuItem>
+                    <MenuItem value="hydrogen">수소</MenuItem>
+                  </TextField>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    label="색상"
+                    value={vehicleBasicInfo.color}
+                    onChange={(e) =>
+                      handleVehicleBasicInfoChange('color', e.target.value)
+                    }
+                  />
+                </FormControl>
+              </Grid>
+          </Grid>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                label="부가 옵션"
+                value={vehicleBasicInfo.options}
+                onChange={(e) => handleVehicleBasicInfoChange('options', e.target.value)}
+              />
+            </FormControl>
           </Box>          
           <Stack direction="row" spacing={2} justifyContent="flex-end" marginTop={2}>
             <Button type="submit" variant="contained" color="success" style={{width: 150}}>
