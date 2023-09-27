@@ -116,16 +116,16 @@ function GridComponent() {
   };
 
   return (
-    <div style={{ border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
+    <div style={{ width : '90%',border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
       <DataGrid
         rows={data}
         columns={columns}
         autoHeight
         columnBuffer={5}
-        pageSizeOptions={[5, 10, 20]}
+        // pageSizeOptions={[5, 10, 20]}
         initialState={{
           ...data.initialState,
-          pagination: { paginationModel: { pageSize: 5 } },
+          pagination: { paginationModel: { pageSize: 10 } },
         }}
         onRowClick={handleRowClick}
         style={{ width: '100%' }}

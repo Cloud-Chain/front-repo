@@ -3,7 +3,7 @@ import GridComponent from './GridComponent';
 const InspectionDashboard = ( ) => {
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center', marginTop:30 }}>
       <GridComponent/>
     </div>
   );
