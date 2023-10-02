@@ -1,12 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid, MenuItem  } from '@mui/material';
 import { apiBaseUrl,bearerToken } from 'config';
-
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange }) => {
-
+  const [loading, setLoading] = useState(false); // Add this state
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true); // Set loading to true when the request is being made
 
     console.log(row);
 
@@ -33,11 +34,13 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false regardless of success or failure
+        handleClose(); // Close the modal after the fetch request is complete
       });
-    
-    handleClose();
   };
-
+  
   const handleInspectionChange = (field, value) => {
     switch (field) {
       case 'inspectionStatus':
@@ -104,6 +107,21 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
         <h2 id="modal-title">검수 결과 입력란</h2>
         <hr/>
         <form onSubmit={handleSubmit}>
+          {loading && (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                backgroundColor="transparent"
+              >
+                <CircularIndeterminate />
+              </Box>
+            )}
           <Box marginBottom={2}>
             <h3 style={{margin:'0px'}}>차량 기본 정보</h3>
             <Grid container spacing={2}>

@@ -3,9 +3,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/ixData.json';
 import { apiBaseUrl,bearerToken } from 'config';
 import Button from '@mui/material/Button'; // Material UI의 Button 컴포넌트를 import
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import InspectionTemplate from './InspectionTemplate';
 
 function GridComponent() {
+  const [loadingData, setLoadingData] = useState(false); // Add this state
+
   const [change, setChange] = useState(false)
   const [open, setOpen] = useState(false);
   const [row, setRow] = useState({
@@ -50,6 +53,7 @@ function GridComponent() {
     },
     etc: 'I think...', // 기타 검수자 소견
   });
+  
   const handleOpen = () => {
     setOpen(true);
   };
@@ -66,13 +70,12 @@ function GridComponent() {
     getNewDatas(setInspections, data, setData,inspections)
   }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
 
-  // useEffect를 사용하여 row의 변화를 감지
   useEffect(() => {
-    // row가 변경될 때 실행될 로직을 여기에 작성
-    console.log('row이 변경되었습니다:', row);
-    getNewDatas(setInspections,data,  setData,inspections)
-    // 여기에서 원하는 작업을 수행할 수 있습니다.
-  }, [change]); // row를 의존성 배열로 설정
+    setLoadingData(true); // Set loading to true before fetching data
+
+    getNewDatas(setInspections, data, setData, inspections)
+      .finally(() => setLoadingData(false)); // Set loading to false when the fetch is complete
+  }, [change]);
 
   const columns = [
     { field: 'vehicleIdentificationNumber', headerName: '차량 식별번호', flex: 1.5 },
@@ -116,7 +119,8 @@ function GridComponent() {
   };
 
   return (
-    <div style={{ width : '90%',border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
+    <div style={{ width: '90%', border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
+      {loadingData && <CircularIndeterminate />} {/* Show loading indicator */}
       <DataGrid
         rows={data}
         columns={columns}
@@ -135,41 +139,33 @@ function GridComponent() {
   );
 }
 
-function getNewDatas(setInspections, data,setData, inspections) {
+function getNewDatas(setInspections, data, setData, inspections) {
   const apiUrl = `${apiBaseUrl}/car-info/inspec-all`;
-
-  // Bearer 토큰을 헤더에 추가
   const headers = {
-    // Authorization: `Bearer ${bearerToken}`,
     Authorization: `Bearer ${bearerToken}`,
   };
 
-  fetch(apiUrl, { headers })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json(); // JSON 데이터로 변환
-  })
-  .then((fetchedData) => {
-    setInspections(fetchedData.data)
-    console.log(inspections)
-    // 데이터를 성공적으로 가져왔을 때 처리
-    const filteredData = fetchedData.data.filter((item) => !item.inspectionStatus);
-    
-    console.log(filteredData)
-    const modifiedData = filteredData.map((item) => ({
-      id: item.id,
-      requestDate: item.requestDate,
-      ...item.vehicleBasicInfo,
-    }));
-    setData(modifiedData); // 데이터를 상태에 저장
-    
-  })
-  .catch((error) => {
-    // 오류 처리
-    console.error("There was a problem with the fetch operation:", error);
-  });
+  return fetch(apiUrl, { headers })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((fetchedData) => {
+      setInspections(fetchedData.data);
+      const filteredData = fetchedData.data.filter((item) => !item.inspectionStatus);
+      const modifiedData = filteredData.map((item) => ({
+        id: item.id,
+        requestDate: item.requestDate,
+        ...item.vehicleBasicInfo,
+      }));
+      setData(modifiedData);
+      console.log(fetchedData.data)
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 }
 
 export default GridComponent;
