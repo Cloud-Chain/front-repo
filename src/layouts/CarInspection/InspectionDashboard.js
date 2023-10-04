@@ -1,3 +1,4 @@
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import React from 'react';
 import GridComponent from './GridComponent';
 const InspectionDashboard = ( ) => {

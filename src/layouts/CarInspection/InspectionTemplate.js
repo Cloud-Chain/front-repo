@@ -1,12 +1,35 @@
-import React, { useState,useEffect } from 'react';
-import { Button, Modal, Box, FormControl, TextField,Stack,Grid, MenuItem  } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Modal, Box, FormControl, TextField,Stack,Grid} from '@mui/material';
 import { apiBaseUrl,bearerToken } from 'config';
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
+import {FilePond} from 'react-filepond';
+
+import 'filepond/dist/filepond.min.css';
 
 const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange }) => {
+  const [loading, setLoading] = useState(false); // Add this state
+  const [fileItems, setFileItems] = useState([]);
 
+  const handleFileChange = (fileItems) => {
+    // FilePond에서 선택된 파일 목록을 상태로 업데이트합니다.
+    setFileItems(fileItems);
 
+    // 파일이 선택되면서 images를 업데이트합니다.
+    setRow((prevRow) => ({
+      ...prevRow,
+      images: {
+        inside: fileItems[0]?.file ?? null,
+        outside: fileItems[1]?.file ?? null,
+        front: fileItems[2]?.file ?? null,
+        left: fileItems[3]?.file ?? null,
+        right: fileItems[4]?.file ?? null,
+        back: fileItems[5]?.file ?? null,
+      },
+    }));
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true); // Set loading to true when the request is being made
 
     console.log(row);
 
@@ -16,10 +39,25 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
       'Content-Type': 'application/json',
     };
 
+    const formData = new FormData();
+    formData.append('inspectionStatus', row.inspectionStatus);
+    formData.append('vehicleBasicInfo', JSON.stringify(row.vehicleBasicInfo));
+    formData.append('vehicleDetailInfo', JSON.stringify(row.vehicleDetailInfo));
+
+    // 이미지 파일을 추가합니다.
+    Object.keys(row.images).forEach((key) => {
+      const image = row.images[key];
+      if (image) {
+        formData.append(`images.${key}`, image);
+      }
+    });
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+     };
     fetch(apiUrl, {
       method: 'PATCH',
       headers,
-      body: JSON.stringify(row),
+      body: formData,
     })
       .then((response) => {
         if (!response.ok) {
@@ -33,11 +71,13 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false regardless of success or failure
+        handleClose(); // Close the modal after the fetch request is complete
       });
-    
-    handleClose();
   };
-
+  
   const handleInspectionChange = (field, value) => {
     switch (field) {
       case 'inspectionStatus':
@@ -104,6 +144,21 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
         <h2 id="modal-title">검수 결과 입력란</h2>
         <hr/>
         <form onSubmit={handleSubmit}>
+          {loading && (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                position="absolute"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                backgroundColor="transparent"
+              >
+                <CircularIndeterminate />
+              </Box>
+            )}
           <Box marginBottom={2}>
             <h3 style={{margin:'0px'}}>차량 기본 정보</h3>
             <Grid container spacing={2}>
@@ -381,7 +436,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
               />
             </FormControl>
           </Box>
-          <Box marginBottom={2}>
+          {/* <Box marginBottom={2}>
           <h3 style={{margin:'0px'}}>차량 촬영 이미지</h3>
           <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -473,7 +528,16 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
               </FormControl>
               </Grid>
           </Grid>   
-          </Box>          
+          </Box>           */}
+           <Box marginBottom={2}>
+            <h3 style={{ margin: '0px' }}>차량 촬영 이미지</h3>
+            <FilePond
+              files={fileItems}
+              onupdatefiles={handleFileChange}
+              allowMultiple={true}
+              maxFiles={6}
+            />
+          </Box>
           <Stack direction="row" spacing={2} justifyContent="flex-end" marginTop={2}>
             <Button type="submit" variant="contained" color="success" style={{width: 150}}>
               요청

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid, MenuItem  } from '@mui/material';
-import { LocalizationProvider, DesktopDateTimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
+import { apiBaseUrl,bearerToken } from 'config';
 
 const SellTransactionTemplate = ({ open, handleClose }) => {
+  const [loading, setLoading] = useState(false);
   const [assignor, setAssignor] = useState({
     name: '',
     residentRegistrationNumber: '',
@@ -38,15 +38,62 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = {
-      assignor,
-      transactionDetails,
-      vehicleBasicInfo,
+    setLoading(true);
+
+    const apiUrl = `${apiBaseUrl}/car-info/inspec`;
+    const headers = {
+        Authorization: `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
     };
-    console.log(data);
-    // Reset state here if necessary
-    handleClose();
-  };
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          id:0,
+          vehicleBasicInfo:vehicleBasicInfo,
+        }),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then((responseData) => {
+        if (responseData.result === 'SUCCESS') {
+            console.log('POST 요청 성공:', responseData);
+            return fetch(`${apiBaseUrl}/car-info/car`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ 
+                  id: 3,
+                  assignor: assignor,
+                  transactionDetails: transactionDetails
+                }),
+            });
+        } else {
+            throw new Error('POST 요청이 실패했습니다.');
+        }
+    })
+    .then((secondResponse) => {
+        if (!secondResponse.ok) {
+            throw new Error('두 번째 요청이 실패했습니다.');
+        }
+        return secondResponse.json();
+    })
+    .then((secondResponseData) => {
+        console.log('두 번째 POST 요청 성공:', secondResponseData);
+        // 여기에서 두 번째 응답에 따른 추가적인 로직을 수행할 수 있습니다.
+    })
+    .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+    })
+    .finally(() => {
+        setLoading(false);
+        handleClose();
+    });
+};
 
   const handleAssignorChange = (field, value) => {
     setAssignor((prevAssignor) => ({
@@ -94,6 +141,21 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
         <h2 id="modal-title">판매 명세서</h2>
         <hr/>
         <form onSubmit={handleSubmit}>
+          {loading && (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              backgroundColor="transparent"
+            >
+              <CircularIndeterminate />
+            </Box>
+          )}
           {/* Assignor Fields */}
           <Box marginBottom={2}>
             <h3 style={{margin:'0px'}}>판매자 정보</h3>

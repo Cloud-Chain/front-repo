@@ -7,6 +7,7 @@ import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import { Card } from '@mui/material';
+import { apiBaseUrl,bearerToken } from 'config';
 
 const useStyles = makeStyles({
   processIcon: {
