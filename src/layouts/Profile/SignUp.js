@@ -155,9 +155,6 @@ function SignUp() {
         await formData.append('image', file);
       }
 
-      // for spring server
-      // await formData.append('uploader', new Blob([JSON.stringify(uploader)], {type: 'application/json'}));
-
       const json = await (
         await fetch(url, {
           method: "POST",
@@ -199,6 +196,7 @@ function SignUp() {
                   name="userid"
                   onChange={handleSubmitChange}
                   autoComplete="userid"
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -233,7 +231,6 @@ function SignUp() {
                   id="name"
                   label="Name"
                   onChange={handleSubmitChange}
-                  autoFocus
                 />
               </Grid>
 

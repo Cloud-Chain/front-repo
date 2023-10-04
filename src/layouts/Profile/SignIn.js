@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {bearerToken, apiBaseUrl} from 'config'
 
 function Copyright(props) {
   return (
@@ -29,14 +30,33 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const SignIn = () => {
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      userid: data.get('userid'),
       password: data.get('password'),
     });
+    getSignIn(data.get('userid'), data.get('password'));
   };
+
+  const getSignIn = async (id, pw) => {
+    const url = `http://localhost:8000/auth/sign-in/`;
+    const json = await (
+      await fetch(url, {
+        method: "POST",
+        headers: {
+          'Content-type': 'application/json',
+        },
+          body: JSON.stringify({
+            id: id,
+            password: pw
+          })
+        })
+      ).json();
+};
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
