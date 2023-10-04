@@ -4,7 +4,19 @@ import { LocalizationProvider, DesktopDatePicker, TextFieldProps } from '@mui/x-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-const PeriodRangeFilter = () => {
+const PeriodRangeFilter = ({testChange}) => {
+  const onChange = (name, value) => {
+    // console.log("in filter ", event);
+    testChange(name , value);
+  };
+  const startChange = (value) => {
+    setStartDate(value);
+    onChange("periodRangeStart", value);
+  };
+  const endChange = (value) => {
+    setEndDate(value);
+    onChange("periodRangeEnd", value);
+  };
   const now = dayjs();
   const [startDate, setStartDate] = useState(now);
   const [endDate, setEndDate] = useState(now);
@@ -21,7 +33,7 @@ const PeriodRangeFilter = () => {
           <DesktopDatePicker
             label="Search start date"
             value={startDate}
-            onChange={newValue => setStartDate(newValue)}
+            onChange= { newValue => startChange(newValue)}
           >
             {({ inputRef, inputProps }: TextFieldProps) => (
               <TextField
@@ -34,7 +46,7 @@ const PeriodRangeFilter = () => {
           <DesktopDatePicker
             label="Search end date"
             value={endDate}
-            onChange={newValue => setEndDate(newValue)}
+            onChange = {newValue => endChange(newValue)}
           >
             {({ inputRef, inputProps }: TextFieldProps) => (
               <TextField

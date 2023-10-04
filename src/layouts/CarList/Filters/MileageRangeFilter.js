@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import { Slider, Typography, TextField } from '@mui/material';
 
-const MileageRangeFilter = () => {
+const MileageRangeFilter = ({testChange}) => {
+  const onChange = () => {
+    // console.log("in filter ", event);
+    testChange("mileageRange" , mileageRange);
+  };
   const [mileageRange, setMileageRange] = useState([0, 300000]); // Initial range: 0 to 300000 (in kilometers)
   const minMileage = mileageRange[0];
   const maxMileage = mileageRange[1];
 
   const handleSliderChange = (event, newValue) => {
     setMileageRange(newValue);
+    onChange();
   };
 
   const handleMinMileageChange = (event) => {
     let newMinMileage = parseInt(event.target.value);
     newMinMileage = isNaN(newMinMileage) ? 0 : newMinMileage;
     setMileageRange([newMinMileage, mileageRange[1]]);
+    onChange();
   };
 
   const handleMaxMileageChange = (event) => {
     let newMaxMileage = parseInt(event.target.value);
     newMaxMileage = isNaN(newMaxMileage) ? 0 : newMaxMileage;
     setMileageRange([mileageRange[0], newMaxMileage]);
+    onChange();
   };
 
   const valueLabelFormat = (value) => {

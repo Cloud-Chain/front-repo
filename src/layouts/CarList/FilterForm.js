@@ -12,17 +12,20 @@ const FilterForm = () => {
   const [filters, setFilters] = useState({
     model: '',
     assignor: '',
-    periodRange: '',
+    periodRangeStart: '',
+    periodRangeEnd: '',
     priceRange: '',
     mileageRange: '',
   });
 
-  const handleSearch = (event) => {
+  const testChange = (name, value) => {
+    console.log("change name : ", name);
+    console.log("change value :", value);
     setFilters((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
-  };
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +53,7 @@ const FilterForm = () => {
         <Grid container spacing={1}>
           <Grid item xs={12} sm={11}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
-              <ModelFilter onChange={handleSearch} />
+              <ModelFilter testChange={testChange} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -62,22 +65,22 @@ const FilterForm = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
-              <AssignorFilter onChange={handleSearch} />
+              <AssignorFilter testChange={testChange} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
-              <PeriodRangeFilter onChange={handleSearch} />
+              <PeriodRangeFilter testChange={testChange} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
-              <PriceRangeFilter onChange={handleSearch} />
+              <PriceRangeFilter testChange={testChange} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
-              <MileageRangeFilter onChange={handleSearch} />
+              <MileageRangeFilter testChange={testChange} />
             </Box>
           </Grid>
         </Grid>

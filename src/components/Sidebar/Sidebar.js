@@ -55,19 +55,25 @@ const Sidebar = () => {
                 </li>
             </Link>
             <p className="title">Community</p>
-            <li>
-              <AccountCircleOutlinedIcon className="icon" />
-              <span>리뷰 조회</span>
-            </li>
+            <Link to="/" style={{ textDecoration: "none"}}>
+              <li>
+                <AccountCircleOutlinedIcon className="icon" />
+                <span>리뷰 조회</span>
+              </li>
+            </Link>
             <p className="title">USER</p>
-            <li>
-              <AccountCircleOutlinedIcon className="icon" />
-              <span>내 프로필</span>
-            </li>
-            <li>
-              <ExitToAppIcon className="icon" />
-              <span>로그아웃</span>
-            </li>
+            <Link to="/profile" style={{ textDecoration: "none"}}>
+              <li>
+                <AccountCircleOutlinedIcon className="icon" />
+                <span>내 프로필</span>
+              </li>
+            </Link>
+            <Link to="/" style={{ textDecoration: "none"}}>
+              <li>
+                <ExitToAppIcon className="icon" />
+                <span>로그아웃</span>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>

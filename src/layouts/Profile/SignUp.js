@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Switch from '@mui/material/Switch';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
+
+
 
 function Copyright(props) {
   return (
@@ -32,22 +37,137 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function SignUp() {
+  // const fileInput = React.useRef(null);
+  const [file, setFile] = useState(null);
+
+  const [submitDatas, setSubmitDatas] = useState({
+    userid: '',
+    email: '',
+    password: '',
+    name: '',
+    org: 'buyer',
+    detail: 'test',
+    reg: ''
+  });
+
   const [isSwitch, setIsSwitch] = useState(true);
-  const [isChecked, setIsChecked] = useState(true);
-  const hadleCheckChage = (event) => {
-    setIsChecked((currentCheck) => !currentCheck)
-    setIsSwitch((currentSwitch) => !currentSwitch)
-  }
+
+  const handleSubmitChange = (event) => {
+    setSubmitDatas((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+    console.log("name : ",event.target.name);
+    console.log("value : ",event.target.value);
+  };
+
+  const hadleSwitchChage = (event) => {
+    setIsSwitch((currentSwitch) => !currentSwitch);
+    // console.log("after change ", isSwitch);
+    { (isSwitch) ? setSubmitDatas({
+        userid: submitDatas.userid,
+        email: submitDatas.email,
+        password: submitDatas.password,
+        name: submitDatas.name,
+        org: 'seller',
+        detail: 'test',
+        reg: ''
+      }) : setSubmitDatas({
+        userid: submitDatas.userid,
+        email: submitDatas.email,
+        password: submitDatas.password,
+        name: submitDatas.name,
+        org: 'buyer',
+        detail: 'test',
+        reg: ''
+      })
+    }
+  };
+
+  // const handleImageClick = (event) => {
+  //   fileInput.current.click();
+  //   // setIsChecked((currentCheck) => !currentCheck)
+  //   // setIsSwitch((currentSwitch) => !currentSwitch)
+  // };
+
+  const handleImageUpload = (event) => {
+    console.log(event.target.files[0]);
+    if (event.target.files[0]) {
+      setFile(event.target.files[0]);
+      console.log("Check for image upload");
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     console.log({
-      id: data.get('userid'),
-      password: data.get('password'),
-      name: data.get('name'),
-      type: data.get('userDivide'),
+      id: submitDatas.userid,//ddata.get('userid'),
+      email: submitDatas.email,//ddata.get('email'),
+      password: submitDatas.password,//ddata.get('password'),
+      name: submitDatas.name,//ddata.get('name'),
+      org: submitDatas.org,//data.get('org'),
+      reg: submitDatas.reg
     });
-    console.log(event);
+    console.log("test   " , submitDatas);
+    getSignUp(submitDatas.org);
+  };
+
+  // const getSignUp = async () => {
+
+  //   const url = 'http://localhost:8000/sign-up/'+submitDatas.org;
+  //   const json = await (
+  //       await fetch(url, {
+  //         method: "POST",
+  //         headers: {
+  //           'Content-type': 'application/json'
+  //       },
+  //         body: JSON.stringify({
+  //           userid: submitDatas.userid,
+  //           name: submitDatas.name,
+  //           email: submitDatas.email,
+  //           password: submitDatas.password,
+  //           org: submitDatas.org,
+  //           businessRegistrationRequest: submitDatas.reg,
+  //           detail: 'test'
+  //         })
+  //       })
+  //     ).json();
+  //     console.log(json);
+  // };
+
+  const getSignUp = async (orgType) => {
+      // if (!file) return;
+      console.log("Test for param orgType  - ", orgType);
+      const url = 'http://localhost:8000/sign-up/'+submitDatas.org;
+      const formData = new FormData();
+
+      await formData.append('dto', new Blob([JSON.stringify({
+                  userid: submitDatas.userid,
+                  name: submitDatas.name,
+                  email: submitDatas.email,
+                  password: submitDatas.password,
+                  org: submitDatas.org,
+                  detail: 'test'
+                })], {type: 'application/json'}) );
+      if (orgType == 'seller') {
+        console.log("check image");
+        await formData.append('image', file);
+      }
+
+      // for spring server
+      // await formData.append('uploader', new Blob([JSON.stringify(uploader)], {type: 'application/json'}));
+
+      const json = await (
+        await fetch(url, {
+          method: "POST",
+          // headers: {
+          //   'Content-type': 'multipart/form-data'
+          // },
+            body: formData
+          })
+        ).json();
+
   };
 
   return (
@@ -77,7 +197,19 @@ function SignUp() {
                   id="userid"
                   label="User ID"
                   name="userid"
+                  onChange={handleSubmitChange}
                   autoComplete="userid"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  onChange={handleSubmitChange}
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -88,6 +220,7 @@ function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  onChange={handleSubmitChange}
                   autoComplete="new-password"
                 />
               </Grid>
@@ -99,9 +232,11 @@ function SignUp() {
                   fullWidth
                   id="name"
                   label="Name"
+                  onChange={handleSubmitChange}
                   autoFocus
                 />
               </Grid>
+
               <Grid item xs={12} sm={4}>
                 <Typography variant="p" color="inherit" align="justify" noWrap>
                   구매자 / 판매자
@@ -109,8 +244,8 @@ function SignUp() {
               </Grid>
               <Grid item xs={12} sm={3}>
                 <Switch
-                  checked={isChecked}
-                  onChange={hadleCheckChage}
+                  checked={isSwitch}
+                  onChange={hadleSwitchChage}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
               </Grid>
@@ -118,19 +253,45 @@ function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="userDivide"
+                  id="org"
                   label="User Divide"
-                  name="userDivide"
+                  name="org"
                   disabled
                   value={isSwitch ? "buyer" : "seller"}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
+              {isSwitch ? null : (
+              <Grid item xs={12}>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="p" color="inherit" align="justify" noWrap>
+                    사업자등록증
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Badge badgeContent={4} color="primary">
+                    <MailIcon color="action" />
+                  </Badge>
+                </Grid>
+                <Grid item xs={4}>
+                  <input type="file" name="image" onChange={handleImageUpload} />
+                  {/*  시도 1
+                  <Button
+                    onRowClick={handleImageClick}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    이미지 업로드
+                  </Button>
+                  <input type="file"
+                    ref={fileInput}
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }} /> 
+                    */}
+
+                </Grid>
+              </Grid> )}
+
             </Grid>
             <Button
               type="submit"
