@@ -17,7 +17,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
     // 파일이 선택되면서 images를 업데이트합니다.
     setRow((prevRow) => ({
       ...prevRow,
-      images: {
+      imagesRequest: {
         inside: fileItems[0]?.file ?? null,
         outside: fileItems[1]?.file ?? null,
         front: fileItems[2]?.file ?? null,
@@ -30,30 +30,38 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true); // Set loading to true when the request is being made
-
+  
     console.log(row);
-
+  
     const apiUrl = `${apiBaseUrl}/car-info/inspec`;
     const headers = {
       Authorization: `Bearer ${bearerToken}`,
-      'Content-Type': 'application/json',
+      // Do not set Content-Type here, let FormData handle it
     };
-
+  
     const formData = new FormData();
-    formData.append('inspectionStatus', row.inspectionStatus);
-    formData.append('vehicleBasicInfo', JSON.stringify(row.vehicleBasicInfo));
-    formData.append('vehicleDetailInfo', JSON.stringify(row.vehicleDetailInfo));
-
-    // 이미지 파일을 추가합니다.
-    Object.keys(row.images).forEach((key) => {
-      const image = row.images[key];
+    const inspectDto = {
+      inspectionStatus: row.inspectionStatus,
+      vehicleBasicInfo: row.vehicleBasicInfo,
+      vehicleDetailInfo: row.vehicleDetailInfo,
+      // ... Add other fields from your InspectDto
+    };
+    console.log(row)
+    console.log(row.imagesRequest)
+    formData.append('dto', new Blob([JSON.stringify(inspectDto)], {type: 'application/json'}));
+  
+    // 이미지 파일들을 List 형태로 추가합니다.
+    Object.values(row.imagesRequest).forEach((image, index) => {
       if (image) {
-        formData.append(`images.${key}`, image);
+        formData.append('imagesRequest', image);
       }
     });
+  
+    // For debugging purposes, log formData entries
     for (const [key, value] of formData.entries()) {
       console.log(key, value);
-     };
+    }
+  
     fetch(apiUrl, {
       method: 'PATCH',
       headers,
@@ -436,99 +444,6 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
               />
             </FormControl>
           </Box>
-          {/* <Box marginBottom={2}>
-          <h3 style={{margin:'0px'}}>차량 촬영 이미지</h3>
-          <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="내측 사진"
-                    value={row.images.inside}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'inside',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="외측 사진"
-                    value={row.images.outside}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'outside',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-          </Grid>       
-          <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="전면 사진"
-                    value={row.images.front}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'front',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="좌측 사진"
-                    value={row.images.left}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'left',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-          </Grid>  
-          <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="우측 사진"
-                    value={row.images.right}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'right',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <TextField
-                    label="후면 사진"
-                    value={row.images.back}
-                    onChange={(e) =>
-                      handleInspectionChange('images', {
-                        field: 'back',
-                        value: e.target.value,
-                      })}
-                  >
-                  </TextField>
-              </FormControl>
-              </Grid>
-          </Grid>   
-          </Box>           */}
            <Box marginBottom={2}>
             <h3 style={{ margin: '0px' }}>차량 촬영 이미지</h3>
             <FilePond
