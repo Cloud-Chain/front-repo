@@ -11,31 +11,29 @@ import Profile from "./layouts/Profile/Profile"
 import SignIn from "./layouts/Profile/SignIn";
 import SignUp from "./layouts/Profile/SignUp";
 import Album from "./layouts/Main/Album";
+import InfraSidebar from 'components/InfraSidebar/InfraSidebar';
+import Blockchain from 'layouts/Blockchain/Blockchain';
 import InspectionDashboard from "./layouts/CarInspection/InspectionDashboard";
 import Navbar from 'components/Navbar/Navbar';
+import Dashboard from 'layouts/Main/Dashboard';
+import Cluster from 'layouts/Cluster/Cluster';
 const theme = createTheme();
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className="app-container">
-        <Sidebar/>
+        <InfraSidebar/>
         <div className="content">
-          <Navbar/>
           <Routes>
-            <Route exact path="/home" element={< Album/>} />
-            <Route exact path={"/buy"} element={<SearchDashboard />} />
+            <Route index element={< Dashboard/>} />
+            <Route path="/cluster" element={< Cluster/>} />
             <Route exact path={"/sell"} element={<SellCar />} />
-            <Route path="/buy/:id" element={< CarDetailComponent/>} />
-            <Route exact path="/profile" element={< Profile/>} />
-            <Route exact path="/signin" element={< SignIn/>} />
-            <Route exact path="/signup" element={< SignUp/>} />
-            <Route exact path="/ix" element={<InspectionDashboard/>}/>
+            <Route path="/blockchain" element={< Blockchain/>} />
           </Routes>
         </div>
       </div>
     </ThemeProvider>
-
   );
 };
 
