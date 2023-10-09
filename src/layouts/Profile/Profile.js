@@ -18,13 +18,27 @@ function Profile() {
     const [profile, setProfile] = useState(null);
 
     const getProfile = async () => {
-        const json = await (
-            //await fetch(`https://localhost:8080/auth/get`)
-            await fetch(`https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year`)     
-        ).json();
-        console.log(json);
-        setProfile(json.data);
-        setLoading(false);
+        const userid = localStorage.getItem('UserId');
+        const token = localStorage.getItem('Authorization');
+        const url = `http://localhost:8000/auth/get-profile/?userid=${userid}`;
+        if (userid != undefined && token != undefined) {
+            const json = await (
+                await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `${token}`,
+                    }
+                    })
+                ).json();
+            console.log(json);
+            if (json.result == 'SUCCESS') {
+                setProfile(json.data);
+                setLoading(false);
+            }
+        } else {
+            setLoading(false);
+        }
     };
 
     return (
@@ -44,7 +58,7 @@ function Profile() {
                     </Box>
                 </Container>
             </ThemeProvider>
-             ) : ( < Mypage data={profile} /> )
+             ) : ( < Mypage profile={profile} getProfile={getProfile} /> )
         // (loading) ? ( <  Mypage data={profile} /> ) : ( < CircularIndeterminate /> )
     );
 }

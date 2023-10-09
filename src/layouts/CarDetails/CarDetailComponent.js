@@ -6,6 +6,7 @@ import { Box, Button,Card, CardContent, Typography} from '@mui/material';
 import SlickSlider from './SlickSlider';
 import Avatar from '@mui/material/Avatar';
 import BuyTransactionTemplate from "./BuyTransactionTemplate";
+import ReportTemplate from "./ReportTemplate";
 
 
 
@@ -21,14 +22,29 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
 
   const [data, setData] = useState(JSON.parse(localStorage.getItem("carTransactionData")));
   const [open, setOpen] = useState(false);
+  const [sellerReportOpen, setSellerReportOpen] = useState(false);
+  const [carReportOpen, setCarReportOpen] = useState(false);
   // console.log(jsonData);
   const handleOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSellerReportOpen = () => {
+    setSellerReportOpen(true);
+  };
+  const handleSellerReportClose = () => {
+    setSellerReportOpen(false);
+  };
+  const handleCarReportOpen = () => {
+    setCarReportOpen(true);
+  };
+  const handleCarReportClose = () => {
+    setCarReportOpen(false);
+  };
+
   const containerStyles = {
     maxWidth: '1200px',
     margin: '0 auto',
@@ -127,7 +143,11 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
           <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
             <Card style={{height:'100%'}}>
               <CardContent>
-                <Typography variant="h6" sx={subheadingStyles}>판매자 정보</Typography>
+                <Typography variant="h6" sx={subheadingStyles}>
+                  판매자 정보
+                  <Button variant="contained" color="primary" size="middle" style={{ marginLeft:'20px'}} onClick={handleSellerReportOpen}>신고하기</Button>
+                </Typography>
+                <ReportTemplate type={"판매자"} reportOpen={sellerReportOpen} handleReportClose={handleSellerReportClose}/>
                 {pairStrings.slice(0, 5).map((pairString, index) => {
                   const [key, value] = pairString.split(': ');
                   return (
@@ -149,7 +169,11 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
           }}>
             <Card>
               <CardContent>
-                <Typography variant="h6" sx={subheadingStyles}>차량 상세 정보</Typography>
+                <Typography variant="h6" sx={subheadingStyles}>
+                  차량 상세 정보
+                  <Button variant="contained" color="primary" size="middle" style={{ marginLeft:'20px'}} onClick={handleCarReportOpen}>신고하기</Button>
+                </Typography>
+                <ReportTemplate type={"차량"} reportOpen={carReportOpen} handleReportClose={handleCarReportClose}/>
                 {pairStrings.slice(5).map((pairString, index) => {
                   const [key, value] = pairString.split(': ');
                   return (
