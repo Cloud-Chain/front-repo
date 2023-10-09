@@ -22,21 +22,27 @@ function Profile() {
         const token = localStorage.getItem('Authorization');
         const url = `http://localhost:8000/auth/get-profile/?userid=${userid}`;
         if (userid != undefined && token != undefined) {
-            const json = await (
-                await fetch(url, {
+            const response = await fetch(url, {
                     method: "GET",
                     headers: {
                         'Content-type': 'application/json',
                         'Authorization': `${token}`,
                     }
-                    })
-                ).json();
-            console.log(json);
-            if (json.result == 'SUCCESS') {
-                setProfile(json.data);
-                setLoading(false);
+                    }).then(res => {
+                        if(res.status === 200) {
+                            setLoading(false);
+                            return res.json();
+                        }
+                        setLoading(false);
+                    });
+            console.log("zzzzzz  ", response);
+            if (response.result == 'SUCCESS') {
+                setProfile(response.data);
+            } else {
+                setProfile(null);
             }
         } else {
+            setProfile(null);
             setLoading(false);
         }
     };
@@ -58,9 +64,9 @@ function Profile() {
                     </Box>
                 </Container>
             </ThemeProvider>
-             ) : ( < Mypage profile={profile} getProfile={getProfile} /> )
+             ) : ( < Mypage profile={profile} setProfile={setProfile} /> )
         // (loading) ? ( <  Mypage data={profile} /> ) : ( < CircularIndeterminate /> )
     );
-}
+};
 
 export default Profile;

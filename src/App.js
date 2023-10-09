@@ -2,7 +2,7 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import { ThemeProvider,} from '@mui/styles';
 import { createTheme } from "@mui/material";
-import CarDetail from './layouts/CarDetails/CarDetail'
+import CarDetailLoading from './layouts/CarDetails/CarDetailLoading'
 import SellCar from './layouts/CarSelling/SellCar'
 import SearchDashboard from './layouts/CarList/SearchDashboard';
 import CompromiseDashboard from 'layouts/CarCompromise/CompromiseDashboard';
@@ -24,11 +24,11 @@ const App = () => {
         <div className="content">
           <Navbar/>
           <Routes>
-            <Route exact path="/home" element={< Album/>} />
+            <Route exact path="" element={< Album/>} />
             <Route exact path={"/buy"} element={<SearchDashboard />} />
             <Route exact path={"/sell"} element={<SellCar />} />
             <Route exact path={"/compromise"} element={<CompromiseDashboard />} /> 
-            <Route path="/buy/:id" element={< CarDetail/>} />
+            <Route path="/buy/:id" element={< CarDetailLoading/>} />
             <Route exact path="/profile" element={< Profile/>} />
             <Route exact path="/signin" element={< SignIn/>} />
             <Route exact path="/signup" element={< SignUp/>} />

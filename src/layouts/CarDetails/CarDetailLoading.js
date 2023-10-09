@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 
 const defaultTheme = createTheme();
 
-const CarDetail = () => {
+const CarDetailLoading = () => {
     const { id } = useParams();
     useEffect(() => {
         getCarInfo();
@@ -52,4 +52,4 @@ const CarDetail = () => {
     );
 };
 
-export default CarDetail;
+export default CarDetailLoading;

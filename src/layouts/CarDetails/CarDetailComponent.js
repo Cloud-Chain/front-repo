@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import { Box, Button,Card, CardContent, Typography} from '@mui/material';
+import { Box, Button, Card, CardContent, Typography} from '@mui/material';
 // import jsonData from '../../assets/data.json';
 import SlickSlider from './SlickSlider';
 import Avatar from '@mui/material/Avatar';
 import BuyTransactionTemplate from "./BuyTransactionTemplate";
 import ReportTemplate from "./ReportTemplate";
+import CarDetailTemplate from "./CarDetailTemplate";
 
 
 
@@ -24,12 +25,20 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
   const [open, setOpen] = useState(false);
   const [sellerReportOpen, setSellerReportOpen] = useState(false);
   const [carReportOpen, setCarReportOpen] = useState(false);
-  // console.log(jsonData);
+  const [carDetailOpen, setCarDetailOpen] = useState(false);
+  
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCarDetailOpen = () => {
+    setCarDetailOpen(true);
+  };
+  const handleCarDetailClose = () => {
+    setCarDetailOpen(false);
   };
 
   const handleSellerReportOpen = () => {
@@ -53,24 +62,6 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
     alignItems: 'center',
   };
 
-  const tempData = {
-    id: 1,
-    uploadDate: "2023-06-28 08:11:17",
-    assignor: {
-      name: "John",
-      residentRegistrationNumber: "1234567890",
-      phoneNumber: '123-456-7890',
-      address: 'Seoul'
-    },
-    transactionDetails: {
-      transactionState: "Selling",
-      vehicleRegistrationNumber: "1234",
-      vehicleModelName: "Tesla Model S",
-      vehicleIdentificationNumber: "5YJ3E1EA1JF00001",
-      transactionAmount: 1000,
-      mileage: 10000
-    }
-  };
 
   const flattenObject = (obj, prefix = '') => {
     return Object.keys(obj).reduce((acc, key) => {
@@ -171,8 +162,10 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
               <CardContent>
                 <Typography variant="h6" sx={subheadingStyles}>
                   차량 상세 정보
+                  <Button variant="contained" color="primary" size="middle" style={{ marginLeft:'20px'}} onClick={handleCarDetailOpen}>상세 정보 보기</Button>
                   <Button variant="contained" color="primary" size="middle" style={{ marginLeft:'20px'}} onClick={handleCarReportOpen}>신고하기</Button>
                 </Typography>
+                <CarDetailTemplate detailData={detailData} setDetailData={setDetailData} detailOpen={carDetailOpen} handleDetailClose={handleCarDetailClose}/>
                 <ReportTemplate type={"차량"} reportOpen={carReportOpen} handleReportClose={handleCarReportClose}/>
                 {pairStrings.slice(5).map((pairString, index) => {
                   const [key, value] = pairString.split(': ');
