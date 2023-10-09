@@ -65,6 +65,7 @@ const SignIn = () => {
       localStorage.setItem("UserName", json.data.name);
       localStorage.setItem("Org", json.data.org);
       localStorage.setItem("UserId", json.data.id);
+      
       alert("로그인");
       navigate("/profile");
     } else {
