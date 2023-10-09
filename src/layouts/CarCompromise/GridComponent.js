@@ -1,11 +1,12 @@
 import React, { useState,useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/ixData.json';
-import {  org, userName, apiBaseUrl,bearerToken } from 'config';
+import {apiBaseUrl,bearerToken } from 'config';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import { Button } from '@mui/material';
 import CompromiseTemplate from './CompromiseTemplate';
 import { useNavigate } from 'react-router-dom';
+import ReviewTemplate from './ReviewTemplate';
 
 
 function GridComponent() {
@@ -14,6 +15,7 @@ function GridComponent() {
   const [transactions, setTransactions] = useState([])
   const [data, setData] = useState(jsonData);
   const [change, setChange] = useState(false)
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [row, setRow] = useState({
     id: 1,
@@ -45,7 +47,14 @@ function GridComponent() {
     },
   });
   
-  
+  const handleReviewOpen = () => {
+
+    setReviewOpen(true);
+  };
+
+  const handleReviewClose = () => {
+    setReviewOpen(false);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -54,7 +63,6 @@ function GridComponent() {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   useEffect(() => {   
     getNewDatas(setTransactions, data, setData,transactions)
@@ -87,7 +95,7 @@ function GridComponent() {
               backgroundColor: (() => {
                 if (params.row.transactionState === 'SoldOut') {
                   return '#D3D3D3';
-                } else if (params.row.transactionState === `${org.charAt(0).toUpperCase() + org.slice(1)}Request`) {
+                } else if (params.row.transactionState === `${localStorage.getItem('Org').toString().charAt(0).toUpperCase() + localStorage.getItem('Org').toString().slice(1)}Request`) {
                   return '#FFA726';
                 } else {
                   return '#FFD54F'; // 이 색상은 예시일뿐, 필요에 따라 변경 가능
@@ -97,12 +105,12 @@ function GridComponent() {
               marginRight: 8,
             }}
             onClick={(event) => handleAdjustTransaction(event,params.row)}
-            disabled={params.row.transactionState === 'SoldOut'} 
-          >
+            disabled={params.row.transactionState === 'SoldOut' && localStorage.getItem('Org') === 'seller'}
+            >
             {(() => {
               if (params.row.transactionState === 'SoldOut') {
                 return '거래 완료';
-              } else if (params.row.transactionState === `${org.charAt(0).toUpperCase() + org.slice(1)}Request`) {
+              } else if (params.row.transactionState === `${localStorage.getItem('Org').toString().charAt(0).toUpperCase() + localStorage.getItem('Org').toString().slice(1)}Request`) {
                 return '처리 중';
               } else {
                 return '조정 요청';
@@ -119,7 +127,14 @@ function GridComponent() {
     const foundTransaction = transactions.find(obj => obj.id == row.id);
     console.log(foundTransaction);
     setRow(foundTransaction)
-    handleOpen()
+    
+    if (foundTransaction.transactionDetails.transactionState == 'SoldOut' && localStorage.getItem('Org') == 'seller') {
+
+      handleReviewOpen()
+    } else {
+      handleOpen()
+    }
+    
   };
 
   const handleRowClick = (row) => {
@@ -145,14 +160,15 @@ function GridComponent() {
         style={{ width: '100%' }}
       />
       <CompromiseTemplate open={open} handleClose={handleClose} row={row} setRow={setRow} change={change} setChange={setChange} />
+      <ReviewTemplate open={reviewOpen} handleClose={handleReviewClose} row={row} setRow={setRow} change={change} setChange={setChange} />
     </div>
   );
 }
 
 function getNewDatas(setTransactions, data, setData, transactions) {
-  const apiUrl = `${apiBaseUrl}/contract/get-contract-user?userid=${userName}`;
+  const apiUrl = `${apiBaseUrl}/contract/get-contract-user?userid=${localStorage.getItem('UserName')}`;
   const headers = {
-    Authorization: `Bearer ${bearerToken}`,
+    Authorization: localStorage.getItem('Authorization'),
   };
 
   return fetch(apiUrl, { headers })
@@ -164,11 +180,6 @@ function getNewDatas(setTransactions, data, setData, transactions) {
     })
     .then((fetchedData) => {
       setTransactions(fetchedData.data);
-      const filteredData = fetchedData.data.filter((item) => item.transactionDetails.transactionState.endsWith("Request"))
-      // const filteredData = fetchedData.data.filter((item) =>
-      //   (item.transactionDetails.transactionState === "sellerRequest" && item.assignor.name === userName) ||
-      //   (item.transactionDetails.transactionState === "buyerRequest" && item.assignor.name === userName)
-      // );
       const modifiedData = fetchedData.data.map((item) => {
         return {
           id: item.id,

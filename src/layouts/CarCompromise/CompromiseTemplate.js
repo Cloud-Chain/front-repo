@@ -22,14 +22,12 @@ const CompromiseTemplate = ({ open, handleClose, row, setRow, change, setChange 
           transactionState: "Accept",
         },
       };
-    } else {
-      
-    }
+    } 
     setLoading(true); 
     console.log(row)
     const apiUrl = `${apiBaseUrl}/contract/compromise`;
     const headers = {
-      Authorization: `Bearer ${bearerToken}`,
+      Authorization: localStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     };
     fetch(apiUrl, {
