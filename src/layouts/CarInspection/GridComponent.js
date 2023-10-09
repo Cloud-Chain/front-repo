@@ -8,7 +8,8 @@ import InspectionTemplate from './InspectionTemplate';
 
 function GridComponent() {
   const [loadingData, setLoadingData] = useState(false); // Add this state
-
+  const [inspections, setInspections] = useState([])
+  const [data, setData] = useState(jsonData);
   const [change, setChange] = useState(false)
   const [open, setOpen] = useState(false);
   const [row, setRow] = useState({
@@ -61,9 +62,6 @@ function GridComponent() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [inspections, setInspections] = useState([])
-  const [data, setData] = useState(jsonData);
 
 
   useEffect(() => {   
