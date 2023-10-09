@@ -9,8 +9,14 @@ import Box from '@mui/material/Box';
 const defaultTheme = createTheme();
 
 function Profile() {
+    useEffect(() => {
+        getProfile();
+    }, []);
+
     const [loading, setLoading] = useState(true);
+
     const [profile, setProfile] = useState(null);
+
     const getProfile = async () => {
         const json = await (
             //await fetch(`https://localhost:8080/auth/get`)
@@ -20,9 +26,6 @@ function Profile() {
         setProfile(json.data);
         setLoading(false);
     };
-    useEffect(() => {
-        getProfile();
-    }, []);
 
     return (
         (loading) ? (

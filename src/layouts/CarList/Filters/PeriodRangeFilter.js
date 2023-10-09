@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Box } from '@mui/material';
 import { LocalizationProvider, DesktopDatePicker, TextFieldProps } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-const PeriodRangeFilter = ({testChange}) => {
+const PeriodRangeFilter = ({getChange}) => {
+
   const onChange = (name, value) => {
-    // console.log("in filter ", event);
-    testChange(name , value);
+    // console.log("in filter ", value.format('YYYY-MM-DD'));
+    getChange(name , value.format('YYYY-MM-DD'));
   };
   const startChange = (value) => {
     setStartDate(value);
@@ -17,9 +18,16 @@ const PeriodRangeFilter = ({testChange}) => {
     setEndDate(value);
     onChange("periodRangeEnd", value);
   };
+
   const now = dayjs();
-  const [startDate, setStartDate] = useState(now);
+  const ago = dayjs().subtract(1, "y");
+  const [startDate, setStartDate] = useState(ago);
   const [endDate, setEndDate] = useState(now);
+
+  useEffect(() => {
+    onChange("periodRangeStart", startDate);
+    onChange("periodRangeEnd", endDate);
+  }, []);
 
   return (
     <Box

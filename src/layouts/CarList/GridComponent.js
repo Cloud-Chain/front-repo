@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/data.json';
 import { useNavigate } from 'react-router-dom';
 
-function GridComponent() {
+const GridComponent = ({data, setData}) => {
   const navigate = useNavigate();
-  const [data, setData] = useState(jsonData);
+  const [rowData, setRowData] = useState([]);
+
+  useEffect(() => {
+    setRowData(data);
+  }, [data]);
 
   const columns = [
     { field: 'id', headerName: '인덱스', flex: 0.5 },
@@ -38,6 +42,6 @@ function GridComponent() {
       />
     </div>
   );
-}
+};
 
 export default GridComponent;

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Slider, Typography, TextField } from '@mui/material';
 
-const PriceRangeFilter = ({testChange}) => {
-  const onChange = () => {
+const PriceRangeFilter = ({getChange}) => {
+  const onChange = (type) => {
     // console.log("in filter ", event);
-    testChange("priceRange" , priceRange);
+    getChange("priceFilter" , true);
+    if (type == 'start')
+      getChange("priceRangeStart" , priceRange[0]);
+    else
+      getChange("priceRangeEnd" , priceRange[1]);
   };
   const [priceRange, setPriceRange] = useState([0, 500000000]); // Initial range: 0 to 1 billion (in won)
   const minPrice = priceRange[0];
@@ -12,21 +16,22 @@ const PriceRangeFilter = ({testChange}) => {
 
   const handleSliderChange = (event, newValue) => {
     setPriceRange(newValue);
-    onChange();
+    onChange("start");
+    onChange("end");
   };
 
   const handleMinPriceChange = (event) => {
     let newMinPrice = parseInt(event.target.value);
     newMinPrice = isNaN(newMinPrice) ? 0 : newMinPrice * 10000; // Here, multiplied the value with 1000000
     setPriceRange([newMinPrice, priceRange[1]]);
-    onChange();
+    onChange("start");
   };
 
   const handleMaxPriceChange = (event) => {
     let newMaxPrice = parseInt(event.target.value);
     newMaxPrice = isNaN(newMaxPrice) ? 0 : newMaxPrice * 10000; // Here, multiplied the value with 1000000
     setPriceRange([priceRange[0], newMaxPrice]);
-    onChange();
+    onChange("end");
   };
 
   const valueLabelFormat = value => {

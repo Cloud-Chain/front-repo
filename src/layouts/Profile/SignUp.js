@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Switch from '@mui/material/Switch';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import {useNavigate} from 'react-router-dom'
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -51,6 +51,8 @@ function SignUp() {
   });
 
   const [isSwitch, setIsSwitch] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleSubmitChange = (event) => {
     setSubmitDatas((prev) => ({
@@ -113,29 +115,6 @@ function SignUp() {
     getSignUp(submitDatas.org);
   };
 
-  // const getSignUp = async () => {
-
-  //   const url = 'http://localhost:8000/sign-up/'+submitDatas.org;
-  //   const json = await (
-  //       await fetch(url, {
-  //         method: "POST",
-  //         headers: {
-  //           'Content-type': 'application/json'
-  //       },
-  //         body: JSON.stringify({
-  //           userid: submitDatas.userid,
-  //           name: submitDatas.name,
-  //           email: submitDatas.email,
-  //           password: submitDatas.password,
-  //           org: submitDatas.org,
-  //           businessRegistrationRequest: submitDatas.reg,
-  //           detail: 'test'
-  //         })
-  //       })
-  //     ).json();
-  //     console.log(json);
-  // };
-
   const getSignUp = async (orgType) => {
       // if (!file) return;
       console.log("Test for param orgType  - ", orgType);
@@ -164,7 +143,13 @@ function SignUp() {
             body: formData
           })
         ).json();
-
+      console.log(json);
+      if (json.result == 'SUCCESS') {
+        alert("회원가입 완료");
+        navigate("/signin");
+      } else {
+        alert("회원가입 실패");
+      }
   };
 
   return (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-const AssignorFilter = ({testChange}) => {
+const AssignorFilter = ({getChange}) => {
   const onChange = (event) => {
     // console.log("in filter ", event);
-    testChange(event.target.name , event.target.value);
+    getChange(event.target.name , event.target.value);
   };
   return (
     <div

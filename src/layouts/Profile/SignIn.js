@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {useNavigate} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {bearerToken, apiBaseUrl} from 'config'
 
@@ -30,6 +31,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const SignIn = () => {
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -55,6 +57,16 @@ const SignIn = () => {
           })
         })
       ).json();
+    console.log(json);
+    console.log("check ", json.data.accessToken);
+    if (json.result == 'SUCCESS') {
+
+      localStorage.setItem('Authorization', 'Bearer '+json.data.accessToken)
+      alert("로그인");
+      navigate("/profile");
+    } else {
+      alert("로그인 실패");
+    }
 };
 
 
