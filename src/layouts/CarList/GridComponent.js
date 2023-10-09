@@ -21,8 +21,16 @@ const GridComponent = ({data, setData}) => {
   ];
 
   const handleRowClick = (params) => {
-    const id = params.row.id;
-    navigate(`/buy/${id}`);
+    const rowId = params.row.id;
+    let carTransactionData = "";
+    rowData.forEach(element => {
+      // console.log(element.id);
+      // console.log(rowId);
+      if (element.id == rowId) carTransactionData = JSON.stringify(element);
+    });
+    // console.log(carTransactionData);
+    localStorage.setItem("carTransactionData", carTransactionData);
+    navigate(`/buy/${rowId}`);
   };
 
   return (

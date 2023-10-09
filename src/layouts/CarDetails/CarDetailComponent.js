@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import { Box, Button,Card, CardContent, Typography} from '@mui/material';
-import jsonData from '../../assets/data.json';
+// import jsonData from '../../assets/data.json';
 import SlickSlider from './SlickSlider';
+import Avatar from '@mui/material/Avatar';
 import BuyTransactionTemplate from "./BuyTransactionTemplate";
 
 
 
-const CarDetailComponent = () => {
-  const { id } = useParams();
-  const [data, setData] = useState(jsonData[id]);
-  const [open, setOpen] = useState(false);
+const CarDetailComponent = ({jsonData, setJsonData}) => {
+  const [detailData, setDetailData] = useState(jsonData);
+  const [images, setImages] = useState(jsonData.images);
+  useEffect(() => {
+    setDetailData(jsonData);
+    setImages(jsonData.images);
+    console.log("get Detail data  ", detailData);
+    console.log("Get detail images data  ", images)
+  }, [jsonData]);
 
+  const [data, setData] = useState(JSON.parse(localStorage.getItem("carTransactionData")));
+  const [open, setOpen] = useState(false);
+  // console.log(jsonData);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -59,21 +68,33 @@ const CarDetailComponent = () => {
     }, {});
   };
 
-  const flattenedData = flattenObject(tempData);
+  const flattenedData = flattenObject(data);
 
   const labelMap = {
     'id': 'ID',
-    'uploadDate': '업로드 날짜',
-    'assignor.name': '판매자 이름',
+    'period': '업로드 날짜',
+    'seller': '판매자 이름',
     'assignor.residentRegistrationNumber': '판매자 주민등록번호',
-    'assignor.phoneNumber': '판매자 전화번호',
-    'assignor.address': '판매자 주소',
-    'transactionDetails.transactionState': '판매 상태',
-    'transactionDetails.vehicleRegistrationNumber': '차량 등록번호',
-    'transactionDetails.vehicleModelName': '차량 모델명',
-    'transactionDetails.vehicleIdentificationNumber': '차량 식별번호',
-    'transactionDetails.transactionAmount': '거래 금액',
-    'transactionDetails.mileage': '주행거리',
+    'phoneNumber': '판매자 전화번호',
+    'address': '판매자 주소',
+    'transactionState': '판매 상태',
+    'residentRegistrationNumber': '차량 등록번호',
+    'model': '차량 모델명',
+    'vehicleIdentificationNumber': '차량 식별번호',
+    'price': '거래 금액',
+    'mileage': '주행거리',
+    // 'id': 'ID',
+    // 'uploadDate': '업로드 날짜',
+    // 'assignor.name': '판매자 이름',
+    // 'assignor.residentRegistrationNumber': '판매자 주민등록번호',
+    // 'assignor.phoneNumber': '판매자 전화번호',
+    // 'assignor.address': '판매자 주소',
+    // 'transactionDetails.transactionState': '판매 상태',
+    // 'transactionDetails.vehicleRegistrationNumber': '차량 등록번호',
+    // 'transactionDetails.vehicleModelName': '차량 모델명',
+    // 'transactionDetails.vehicleIdentificationNumber': '차량 식별번호',
+    // 'transactionDetails.transactionAmount': '거래 금액',
+    // 'transactionDetails.mileage': '주행거리',
   };
 
   const subheadingStyles = {
@@ -90,10 +111,19 @@ const CarDetailComponent = () => {
     <div style={containerStyles}>
       <h1>차량 판매 정보</h1>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} sm={6} style={{ padding: '16px' }}>
-          <SlickSlider />
+        <Grid item xs={12} sm={12} style={{ padding: '16px' }}>
+          <SlickSlider carImages={images} setCarImages={setImages} />
         </Grid>
-        <Grid item xs={12} sm={6} style={{ padding: '16px' }}>
+        <Grid item xs={12} sm={4} style={{ padding: '16px' }}>
+          <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
+            <Card style={{height:'100%'}}>
+              <CardContent>
+                <Avatar alt="Profile Image" src="/static/images/avatar/1.jpg" />
+              </CardContent>
+            </Card>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={8} style={{ padding: '16px' }}>
           <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
             <Card style={{height:'100%'}}>
               <CardContent>

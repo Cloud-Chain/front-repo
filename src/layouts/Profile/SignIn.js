@@ -61,7 +61,10 @@ const SignIn = () => {
     console.log("check ", json.data.accessToken);
     if (json.result == 'SUCCESS') {
 
-      localStorage.setItem('Authorization', 'Bearer '+json.data.accessToken)
+      localStorage.setItem('Authorization', 'Bearer '+json.data.accessToken);
+      localStorage.setItem("UserName", json.data.name);
+      localStorage.setItem("Org", json.data.org);
+      localStorage.setItem("UserId", json.data.id);
       alert("로그인");
       navigate("/profile");
     } else {

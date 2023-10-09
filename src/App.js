@@ -2,7 +2,7 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import { ThemeProvider,} from '@mui/styles';
 import { createTheme } from "@mui/material";
-import CarDetailComponent from './layouts/CarDetails/CarDetailComponent'
+import CarDetail from './layouts/CarDetails/CarDetail'
 import SellCar from './layouts/CarSelling/SellCar'
 import SearchDashboard from './layouts/CarList/SearchDashboard';
 import CompromiseDashboard from 'layouts/CarCompromise/CompromiseDashboard';
@@ -28,7 +28,7 @@ const App = () => {
             <Route exact path={"/buy"} element={<SearchDashboard />} />
             <Route exact path={"/sell"} element={<SellCar />} />
             <Route exact path={"/compromise"} element={<CompromiseDashboard />} /> 
-            <Route path="/buy/:id" element={< CarDetailComponent/>} />
+            <Route path="/buy/:id" element={< CarDetail/>} />
             <Route exact path="/profile" element={< Profile/>} />
             <Route exact path="/signin" element={< SignIn/>} />
             <Route exact path="/signup" element={< SignUp/>} />
