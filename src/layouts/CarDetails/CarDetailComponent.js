@@ -9,21 +9,21 @@ import ReportTemplate from "./ReportTemplate";
 import CarDetailTemplate from "./CarDetailTemplate";
 
 const CarDetailComponent = ({jsonData, setJsonData}) => {
-  const [detailData, setDetailData] = useState(null);
+  const [detailData, setDetailData] = useState([]);
   const [images, setImages] = useState(jsonData.images);
   const [pairData, setPairData] = useState([]);
   useEffect(() => {
     setDetailData(jsonData);
     setImages(jsonData.images);
-    // const flattenedData = flattenObject(data);
-    // setFlattData(flattenedData);
     console.log("get Detail data  ", detailData);
     console.log("Get detail images data  ", images)
   }, [jsonData]);
 
   useEffect(() => {
     if (detailData !== null) {
-      const flattenedData = flattenObject(detailData);
+      const jsonObjectData = JSON.parse(localStorage.getItem("carTransactionData"));
+      console.log("Check for localstorage json data  ", jsonObjectData);
+      const flattenedData = flattenObject(jsonObjectData);
       setPairStrings(flattenedData);
     }
     // console.log("get Detail data  ", detailData);
@@ -73,6 +73,9 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
 
 
   const flattenObject = (obj, prefix = '') => {
+    if (obj === undefined || obj === null) {
+      return {};
+    }
     return Object.keys(obj).reduce((acc, key) => {
       const propKey = prefix ? `${prefix}.${key}` : key;
       const value = obj[key];
@@ -83,8 +86,6 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
       }
     }, {});
   };
-
-  const flattenedData = flattenObject(data);
 
   const labelMap = {
     'id': 'ID',

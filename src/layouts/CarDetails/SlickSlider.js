@@ -65,6 +65,10 @@ const SlickSlider = ({carImages, setCarImages}) => {
   };
 
   const imageStyles = {
+    width: '600px',
+    height: '600px',
+    textAlign: "center",
+    //marginLeft: "space-between",//'200px',
     objectFit: "cover",
   };
 

@@ -70,7 +70,7 @@ const SignIn = () => {
         id: json.data.id,
       })
       alert("로그인");
-      navigate("/profile");
+      navigate("/home");
     } else {
       alert("로그인 실패");
     }
@@ -80,7 +80,7 @@ const SignIn = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Box
           sx={{
             marginTop: 8,

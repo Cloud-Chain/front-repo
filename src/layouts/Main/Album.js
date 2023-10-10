@@ -138,7 +138,6 @@ function Album() {
     };
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
       <AppBar position="relative" style={{backgroundColor: '#6439ff'}} >
         <Toolbar>
           <DirectionsCarIcon sx={{ mr: 2 }} />
@@ -205,7 +204,7 @@ function Album() {
         </Container>
       </main>
       {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+      {/* <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
@@ -218,7 +217,7 @@ function Album() {
           Something here to give the footer a purpose!
         </Typography>
         <Copyright />
-      </Box>
+      </Box> */}
       {/* End footer */}
     </ThemeProvider>
   );
