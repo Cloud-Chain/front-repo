@@ -8,10 +8,7 @@ import { apiBaseUrl } from 'config';
 
 
 const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
-<<<<<<< Updated upstream
-=======
-  // console.log(jsonData)
->>>>>>> Stashed changes
+
   const [loading, setLoading] = useState(false);
   const [assignee, setAssignee] = useState({
     name: localStorage.getItem("UserName"),
