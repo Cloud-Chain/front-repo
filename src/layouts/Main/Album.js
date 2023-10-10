@@ -14,6 +14,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import dayjs from 'dayjs';
@@ -39,21 +41,30 @@ const defaultTheme = createTheme();
 
 function Album() {
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
+    const [txData, setTxData] = useState([]);
+    const [ixData, setIxData] = useState([]);
+    const [txAsync, setTxAsync] = useState(false);
+    const [ixAsync, setIxAsync] = useState(false);
+    const [mergeData, setMergeData] = useState([]);
 
     useEffect(() => {
-      getCarList();
+      if (txAsync && ixAsync) {
+        matchData();
+      }
+    }, [txAsync, ixAsync]);
+
+    useEffect(() => {
+      getCarTxList();
+      getCarIxList();
     }, []);
 
-    const getCarList = async () => {
-      // console.log(localStorage.getItem('Authorization'));
+    const getCarTxList = async () => {
       const url = `http://localhost:8000/contract/get-contract`;
       const json = await (
         await fetch(url, {
           method: "POST",
           headers: {
             'Content-type': 'application/json',
-            'Authorization': localStorage.getItem('Authorization'),
           },
             body: JSON.stringify({
               filter: true,
@@ -71,21 +82,58 @@ function Album() {
             })
           })
         ).json();
-      console.log(json);
+      console.log("tx data  ",json);
       if (json.result == 'SUCCESS') {
-        localStorage.getItem('Authorization', 'Bearer '+json.data.accessToken);
-        setData(json.data);
+        setTxData(json.data);
+        setTxAsync(true);
         // alert("로그인");
       } else {
         // alert("로그인 실패");
       }
     };
 
+    const getCarIxList = async () => {
+      const url = `http://localhost:8000/car-info/inspec-all`;
+      const json = await (
+        await fetch(url, {
+          method: "GET"
+          })
+        ).json();
+      console.log("ix data  ",json);
+      if (json.result == 'SUCCESS') {
+        setIxData(json.data);
+        setIxAsync(true);
+        // alert("로그인");
+      } else {
+        // alert("로그인 실패");
+      }
+    };
+
+    const matchData = () => {
+      const mergedData = txData.map(item1 => {
+        const matchingItemInData2 = ixData.find(item2 => item2.id === item1.id);
+        if (matchingItemInData2) {
+          return { ...item1, ...matchingItemInData2 };
+        } else {
+          return item1; // data2에 해당 id를 가진 항목이 없는 경우
+        }
+      });
+      console.log("merge data  ", mergedData);
+      setMergeData(mergedData);
+    };
+
+    const handleSellerClick = () => {
+      navigate('/');
+    };
+    const handleCarClick = () => {
+      navigate("/buy");
+    };
+
     const nav = (id) => {
-        // const id = id;
-        console.log(id);
-        navigate(`/buy/${id}`);
-      };
+      // const id = id;
+      console.log(id);
+      navigate(`/buy/${id}`);
+    };
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -102,8 +150,18 @@ function Album() {
       <main>
         <Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
-            {data.map((data) => (
-              <Grid item key={data.id} xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
+              <Button variant="contained" onClick={handleSellerClick} size="large" style={{ backgroundColor: '#6439ff' }} endIcon={<SendIcon />}>
+                판매자 조회하기
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
+              <Button variant="contained" onClick={handleCarClick} size="large" style={{ backgroundColor: '#6439ff' }} endIcon={<SendIcon />}>
+                차량 조회하기
+              </Button>
+            </Grid>
+            {mergeData.map((rowData, index) => (
+              <Grid item key={rowData.id} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
@@ -113,19 +171,29 @@ function Album() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://source.unsplash.com/random?wallpapers"
+                    image= { 
+                        (rowData.images !== undefined) ? (
+                            (rowData.images.outside === "")? "https://source.unsplash.com/random?wallpapers"
+                            : rowData.images.outside 
+                          ) : ("https://source.unsplash.com/random?wallpapers")
+                        } //"https://source.unsplash.com/random?wallpapers"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {data.model}
+                      {rowData.model}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
+                      판매자 : {rowData.seller}
+                    </Typography>
+                    <Typography>
+                      가격 : {rowData.price}
+                    </Typography>
+                    <Typography>
+                      KM : {rowData.mileage}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button onClick={() => nav(data.id)} size="small">View</Button>
+                    <Button onClick={() => nav(rowData.id)} size="small">View</Button>
                     {/* <Button size="small">Edit</Button> */}
                   </CardActions>
                 </Card>

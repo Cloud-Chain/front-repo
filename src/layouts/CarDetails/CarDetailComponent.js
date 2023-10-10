@@ -12,14 +12,26 @@ import CarDetailTemplate from "./CarDetailTemplate";
 
 
 const CarDetailComponent = ({jsonData, setJsonData}) => {
-  const [detailData, setDetailData] = useState(jsonData);
+  const [detailData, setDetailData] = useState(null);
   const [images, setImages] = useState(jsonData.images);
+  const [pairData, setPairData] = useState([]);
   useEffect(() => {
     setDetailData(jsonData);
     setImages(jsonData.images);
+    // const flattenedData = flattenObject(data);
+    // setFlattData(flattenedData);
     console.log("get Detail data  ", detailData);
     console.log("Get detail images data  ", images)
   }, [jsonData]);
+
+  useEffect(() => {
+    if (detailData !== null) {
+      const flattenedData = flattenObject(detailData);
+      setPairStrings(flattenedData);
+    }
+    // console.log("get Detail data  ", detailData);
+    // console.log("Get detail images data  ", images)
+  }, [detailData]);
 
   const [data, setData] = useState(JSON.parse(localStorage.getItem("carTransactionData")));
   const [open, setOpen] = useState(false);
@@ -90,18 +102,6 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
     'vehicleIdentificationNumber': '차량 식별번호',
     'price': '거래 금액',
     'mileage': '주행거리',
-    // 'id': 'ID',
-    // 'uploadDate': '업로드 날짜',
-    // 'assignor.name': '판매자 이름',
-    // 'assignor.residentRegistrationNumber': '판매자 주민등록번호',
-    // 'assignor.phoneNumber': '판매자 전화번호',
-    // 'assignor.address': '판매자 주소',
-    // 'transactionDetails.transactionState': '판매 상태',
-    // 'transactionDetails.vehicleRegistrationNumber': '차량 등록번호',
-    // 'transactionDetails.vehicleModelName': '차량 모델명',
-    // 'transactionDetails.vehicleIdentificationNumber': '차량 식별번호',
-    // 'transactionDetails.transactionAmount': '거래 금액',
-    // 'transactionDetails.mileage': '주행거리',
   };
 
   const subheadingStyles = {
@@ -109,10 +109,13 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
     marginTop: '16px',
   };
 
-  const pairStrings = Object.entries(flattenedData).map(([key, value]) => {
-    const modifiedKey = labelMap[key] || key;
-    return `${modifiedKey}: ${value}`;
-  });
+  const setPairStrings = (paramData) => {
+    const pairStrings = Object.entries(paramData).map(([key, value]) => {
+      const modifiedKey = labelMap[key] || key;
+      return `${modifiedKey}: ${value}`;
+    });
+    setPairData(pairStrings);
+  };
 
   return (
     <div style={containerStyles}>
@@ -139,7 +142,7 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
                   <Button variant="contained" color="primary" size="middle" style={{ marginLeft:'20px'}} onClick={handleSellerReportOpen}>신고하기</Button>
                 </Typography>
                 <ReportTemplate type={"판매자"} reportOpen={sellerReportOpen} handleReportClose={handleSellerReportClose}/>
-                {pairStrings.slice(0, 5).map((pairString, index) => {
+                {pairData.slice(0, 5).map((pairString, index) => {
                   const [key, value] = pairString.split(': ');
                   return (
                     <Typography key={index} sx={{ marginTop: '8px' }}>
@@ -167,7 +170,7 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
                 </Typography>
                 <CarDetailTemplate detailData={detailData} setDetailData={setDetailData} detailOpen={carDetailOpen} handleDetailClose={handleCarDetailClose}/>
                 <ReportTemplate type={"차량"} reportOpen={carReportOpen} handleReportClose={handleCarReportClose}/>
-                {pairStrings.slice(5).map((pairString, index) => {
+                {pairData.slice(5).map((pairString, index) => {
                   const [key, value] = pairString.split(': ');
                   return (
                     <Typography key={index} sx={{ marginTop: '8px' }}>

@@ -1,18 +1,8 @@
-import React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import React, { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom'
+import { Box, Button, Card, CardContent, Typography, Grid, Link, Avatar } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {bearerToken, apiBaseUrl} from 'config'
+import SignIn from './SignIn'
 
 function Copyright(props) {
   return (
@@ -29,111 +19,94 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const SignIn = () => {
+function Mypage({profile, setProfile}) {
+    const [data, setData] = useState(null);
+    const [profileData, setProfileData] = useState([]);
+    useEffect(() => {
+        setData(profile);
+        console.log("In mypage 1 ", data);
+        console.log("In mypage 2 ", profile);
+        // setProfile();
+    }, [profile]);
+    const navigate = useNavigate()
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      userid: data.get('userid'),
-      password: data.get('password'),
-    });
-    getSignIn(data.get('userid'), data.get('password'));
-  };
+    const nav = (url) => {
+        console.log("check for nav");
+        navigate(url)
+    }
+    useEffect(() => {
+        if (data !== null) {
+            setPairData();
+            console.log("In mypage 3 ", profileData);
+        }
+    }, [data]);
 
-  const getSignIn = async (id, pw) => {
-    const url = `http://localhost:8000/auth/sign-in/`;
-    const json = await (
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          'Content-type': 'application/json',
-        },
-          body: JSON.stringify({
-            id: id,
-            password: pw
-          })
-        })
-      ).json();
+    const containerStyles = {
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    };
+    const subheadingStyles = {
+        fontWeight: 'bold',
+        marginTop: '16px',
+    };
+    const labelMap = {
+        'userid': 'User ID',
+        'org': '사용자 구분',
+        'name': '사용자 이름',
+        'email': '사용자 이메일',
+        'detail': '설명',
+    };
+    const setPairData = () => {
+        const pairStrings = Object.entries(data).map(([key, value]) => {
+            // console.log("check modikey ",labelMap[key]);
+            if (labelMap[key] !== undefined) {
+                const modifiedKey = labelMap[key];
+                return `${modifiedKey}: ${value}`;
+            } else { return null; }
+        }).filter(pair => pair !== null);
+        setProfileData(pairStrings);
+        console.log("In mypage 4 ", profileData);
+    };
+
+    return (
+        (data != null) ? (
+            <div style={containerStyles}>
+                <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={12} sm={4} style={{ padding: '16px' }}>
+                        <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
+                            <Card style={{height:'100%'}}>
+                                <CardContent>
+                                    <Avatar alt="Profile Image" src="/static/images/avatar/1.jpg" />
+                                </CardContent>
+                            </Card>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={8} style={{ padding: '16px' }}>
+                        <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
+                            <Card style={{height:'100%'}}>
+                                <CardContent>
+                                    <Typography variant="h6" sx={subheadingStyles}>
+                                        판매자 정보
+                                    </Typography>
+                                    {profileData.map((pairString, index) => {
+                                    const [key, value] = pairString.split(': ');
+                                    return (
+                                        <Typography key={index} sx={{ marginTop: '8px' }}>
+                                            <span style={{ color: 'grey', fontWeight: 'bold' }}>{key}</span>: <span>{value}</span>
+                                        </Typography>
+                                    )
+                                    })}
+                                </CardContent>
+                            </Card>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </div>
+        )
+        : ( <SignIn /> )
+    );
 };
-
-
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="userid"
-              label="User ID"
-              name="userid"
-              autoComplete="userid"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot id?
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
-  );
-}
-
-export default SignIn;
+export default Mypage;

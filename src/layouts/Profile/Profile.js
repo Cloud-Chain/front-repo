@@ -29,15 +29,16 @@ function Profile() {
                         'Authorization': `${token}`,
                     }
                     }).then(res => {
-                        if(res.status === 200) {
-                            setLoading(false);
-                            return res.json();
-                        }
                         setLoading(false);
+                        if(res.status === 200)
+                            return res.json();
+                        return null;
                     });
             console.log("zzzzzz  ", response);
-            if (response.result == 'SUCCESS') {
-                setProfile(response.data);
+            if (response !== null) {
+                if (response.result == 'SUCCESS') {
+                    setProfile(response.data);
+                }
             } else {
                 setProfile(null);
             }
