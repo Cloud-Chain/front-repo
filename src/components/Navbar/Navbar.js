@@ -110,7 +110,7 @@ export default function Navbar() {
                                 </MenuItem>
                             </>
                         ) : (
-                            <MenuItem onClick={handleClose} component={Link} to="/login">
+                            <MenuItem onClick={handleClose} component={Link} to="/signin">
                                 <Typography variant="body1">로그인</Typography>
                             </MenuItem>
                         )}

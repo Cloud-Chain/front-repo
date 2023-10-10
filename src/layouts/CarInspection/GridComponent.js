@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/ixData.json';
-import { apiBaseUrl,bearerToken } from 'config';
+import { apiBaseUrl } from 'config';
 import Button from '@mui/material/Button'; // Material UI의 Button 컴포넌트를 import
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import InspectionTemplate from './InspectionTemplate';
@@ -140,7 +140,7 @@ function GridComponent() {
 function getNewDatas(setInspections, data, setData, inspections) {
   const apiUrl = `${apiBaseUrl}/car-info/inspec-all`;
   const headers = {
-    Authorization: `Bearer ${bearerToken}`,
+    Authorization: localStorage.getItem('Authorization'),
   };
 
   return fetch(apiUrl, { headers })

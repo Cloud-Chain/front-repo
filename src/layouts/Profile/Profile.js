@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
+import { apiBaseUrl } from 'config';
 
 const defaultTheme = createTheme();
 
@@ -20,7 +21,7 @@ function Profile() {
     const getProfile = async () => {
         const userid = localStorage.getItem('UserId');
         const token = localStorage.getItem('Authorization');
-        const url = `http://localhost:8000/auth/get-profile/?userid=${userid}`;
+        const url = `${apiBaseUrl}/auth/get-profile/?userid=${userid}`;
         if (userid != undefined && token != undefined) {
             const response = await fetch(url, {
                     method: "GET",

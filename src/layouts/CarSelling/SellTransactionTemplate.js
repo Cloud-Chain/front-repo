@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid, MenuItem  } from '@mui/material';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
-import { apiBaseUrl,bearerToken } from 'config';
+import { apiBaseUrl } from 'config';
 
 const SellTransactionTemplate = ({ open, handleClose }) => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
 
     const apiUrl = `${apiBaseUrl}/car-info/inspec`;
     const headers = {
-        Authorization: `Bearer ${bearerToken}`,
+        Authorization: localStorage.getItem('Authorization'),
         'Content-Type': 'application/json',
     };
 

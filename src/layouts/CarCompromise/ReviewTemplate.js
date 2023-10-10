@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid} from '@mui/material';
-import {apiBaseUrl,bearerToken } from 'config';
+import {apiBaseUrl } from 'config';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 
 const ReviewTemplate = ({ open, handleClose, row, setRow, change, setChange }) => {

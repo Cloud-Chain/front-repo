@@ -19,6 +19,7 @@ import SendIcon from '@mui/icons-material/Send';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import dayjs from 'dayjs';
+import { apiBaseUrl } from 'config';
 // import jsonData from '../../assets/data.json';
 
 function Copyright() {
@@ -58,8 +59,9 @@ function Album() {
       getCarIxList();
     }, []);
 
-    const getCarTxList = async () => {
-      const url = `http://localhost:8000/contract/get-contract`;
+    const getCarList = async () => {
+      // console.log(localStorage.getItem('Authorization'));
+      const url = `${apiBaseUrl}/contract/get-contract`;
       const json = await (
         await fetch(url, {
           method: "POST",
@@ -93,7 +95,7 @@ function Album() {
     };
 
     const getCarIxList = async () => {
-      const url = `http://localhost:8000/car-info/inspec-all`;
+      const url = `${apiBaseUrl}/car-info/inspec-all`;
       const json = await (
         await fetch(url, {
           method: "GET"

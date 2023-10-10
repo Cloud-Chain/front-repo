@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router-dom'
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
-
+import { apiBaseUrl } from 'config';
 
 
 function Copyright(props) {
@@ -118,7 +118,7 @@ function SignUp() {
   const getSignUp = async (orgType) => {
       // if (!file) return;
       console.log("Test for param orgType  - ", orgType);
-      const url = 'http://localhost:8000/sign-up/'+submitDatas.org;
+      const url = `${apiBaseUrl}/sign-up/`+submitDatas.org;
       const formData = new FormData();
 
       await formData.append('dto', new Blob([JSON.stringify({

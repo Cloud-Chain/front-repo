@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useNavigate} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {bearerToken, apiBaseUrl} from 'config'
+import {apiBaseUrl} from 'config'
 
 function Copyright(props) {
   return (
@@ -44,7 +44,7 @@ const SignIn = () => {
   };
 
   const getSignIn = async (id, pw) => {
-    const url = `http://localhost:8000/auth/sign-in/`;
+    const url = `${apiBaseUrl}/auth/sign-in/`;
     const json = await (
       await fetch(url, {
         method: "POST",

@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import jsonData from '../../assets/ixData.json';
-import {apiBaseUrl,bearerToken } from 'config';
+import {apiBaseUrl } from 'config';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import { Button } from '@mui/material';
 import CompromiseTemplate from './CompromiseTemplate';
@@ -142,7 +142,7 @@ function GridComponent() {
     const id = row.id;
     navigate(`/buy/${id}`);
   };
-
+  console.log(data)
   return (
     <div style={{ width: '90%', border: '2px solid', borderColor: '#888888', borderRadius: 10 }}>
       {loadingData && <CircularIndeterminate />} {/* Show loading indicator */}

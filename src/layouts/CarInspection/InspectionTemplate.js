@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid} from '@mui/material';
-import { apiBaseUrl,bearerToken } from 'config';
+import { apiBaseUrl } from 'config';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import {FilePond} from 'react-filepond';
 
@@ -35,7 +35,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
   
     const apiUrl = `${apiBaseUrl}/car-info/inspec`;
     const headers = {
-      Authorization: `Bearer ${bearerToken}`,
+      Authorization: localStorage.getItem('Authorization'),
       // Do not set Content-Type here, let FormData handle it
     };
   

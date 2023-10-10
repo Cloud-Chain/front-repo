@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField, Stack, Grid, MenuItem } from '@mui/material';
+import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import { LocalizationProvider, DesktopDateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { apiBaseUrl } from 'config';
 
-const SellTransactionTemplate = ({ open, handleClose }) => {
+
+const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
+  console.log(jsonData)
+  const [loading, setLoading] = useState(false);
   const [assignee, setAssignee] = useState({
-    name: '',
+    name: localStorage.getItem("UserName"),
     residentRegistrationNumber: '',
     phoneNumber: '',
     address: '',
@@ -19,22 +24,53 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
     vehicleDeliveryAddress: '',
 
   });
-  const [inspection, setInspection] = useState({
-    inspectionOffice: '',
-    inspectionDate: dayjs(),
-  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
+
     const data = {
+      id : jsonData.id,
       assignee,
-      transactionDetails,
-      inspection,
+      transactionDetails: {
+        ...transactionDetails,
+        balancePaymentDate: transactionDetails.balancePaymentDate.format("YYYY-MM-DD"),
+        vehicleDeliveryDate: transactionDetails.vehicleDeliveryDate.format("YYYY-MM-DD"),
+      },
     };
-    console.log(data);
-    // Reset state here if necessary
-    handleClose();
-  };
+    console.log(data)
+    const apiUrl = `${apiBaseUrl}/contract/buy`;
+    const headers = {
+        Authorization: localStorage.getItem('Authorization'),
+        'Content-Type': 'application/json',
+    };
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then((responseData) => {
+        if (responseData.result === 'SUCCESS') {
+            console.log('POST 요청 성공:', responseData);
+        } else {
+            throw new Error('POST 요청이 실패했습니다.');
+        }
+    })
+    .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+    })
+    .finally(() => {
+        setLoading(false);
+        handleClose();
+    });
+};
 
   const handleAssigneeChange = (field, value) => {
     setAssignee((prevAssignee) => ({
@@ -44,14 +80,10 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
   };
 
   const handleTransactionDetailsChange = (field, value) => {
+    console.log(field)
+
     setTransactionDetails((prevTransactionDetails) => ({
       ...prevTransactionDetails,
-      [field]: value,
-    }));
-  };
-  const handleInspectionChange = (field, value) => {
-    setInspection((prevInspection) => ({
-      ...prevInspection,
       [field]: value,
     }));
   };
@@ -82,7 +114,21 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
         <h2 id="modal-title">구매 명세서</h2>
         <hr />
         <form onSubmit={handleSubmit}>
-          {/* Assignee Fields */}
+          {loading && (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              backgroundColor="transparent"
+            >
+              <CircularIndeterminate />
+            </Box>
+          )}
           <Box marginBottom={2}>
             <h3>구매자 정보</h3>
             <Grid container spacing={2}>
@@ -142,7 +188,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                       label="지불 일자"
                       value={transactionDetails.balancePaymentDate}
                       onChange={(newValue) =>
-                        handleInspectionChange('balancePaymentDate', newValue)
+                        handleTransactionDetailsChange('balancePaymentDate', newValue)
                       }
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -156,7 +202,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                       label="차량 인도 가능일"
                       value={transactionDetails.vehicleDeliveryDate}
                       onChange={(newValue) =>
-                        handleInspectionChange('vehicleDeliveryDate', newValue)
+                        handleTransactionDetailsChange('vehicleDeliveryDate', newValue)
                       }
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -187,4 +233,4 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
   );
 };
 
-export default SellTransactionTemplate;
+export default BuyTransactionTemplate;

@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
+import { apiBaseUrl } from 'config';
 
 const defaultTheme = createTheme();
 
@@ -20,7 +21,7 @@ const CarDetailLoading = () => {
     const [data, setData] = useState(null);
 
     const getCarInfo = async () => {
-        const url = `http://localhost:8000/car-info/inspec?id=${id}`;
+        const url = `${apiBaseUrl}/car-info/inspec?id=${id}`;
         const json = await (
             await fetch(url,{
                 method: "GET"

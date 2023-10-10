@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import { Box, Button, Card, CardContent, Typography} from '@mui/material';
-// import jsonData from '../../assets/data.json';
 import SlickSlider from './SlickSlider';
 import Avatar from '@mui/material/Avatar';
 import BuyTransactionTemplate from "./BuyTransactionTemplate";
 import ReportTemplate from "./ReportTemplate";
 import CarDetailTemplate from "./CarDetailTemplate";
-
-
 
 const CarDetailComponent = ({jsonData, setJsonData}) => {
   const [detailData, setDetailData] = useState(null);
@@ -184,7 +181,7 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
           </Box>
         </Grid>
       </Grid>
-      <BuyTransactionTemplate open={open} handleClose={handleClose}/>
+      <BuyTransactionTemplate open={open} handleClose={handleClose} jsonData={jsonData}/>
     </div>
   );
 };

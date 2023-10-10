@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FilterForm from './FilterForm'
 import GridComponent from './GridComponent'
 import dayjs from 'dayjs';
+import { apiBaseUrl } from 'config';
 
 const SearchDashboard = ( ) => {
 
@@ -32,7 +33,7 @@ const SearchDashboard = ( ) => {
 
   const getCarList = async (type) => {
     // console.log(localStorage.getItem('Authorization'));
-    const url = `http://localhost:8000/contract/get-contract`;
+    const url = `${apiBaseUrl}/contract/get-contract`;
     const json = await (
       await fetch(url, {
         method: "POST",
