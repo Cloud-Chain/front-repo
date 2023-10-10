@@ -59,12 +59,12 @@ const FilterForm = ({getData}) => {
     >
       <FormControl onSubmit={handleSubmit}>
         <Grid container spacing={1}>
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={8.5}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
               <ModelFilter getChange={getChange} />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={2.5}>
             <Box border={2} borderColor="grey.400" borderRadius={4} p={1}> {/* Reduced padding from p={2} to p={1} */}
               <CarStatusFilter getChange={getChange} />
             </Box>

@@ -19,7 +19,7 @@ const CarStatusFilter = ({getChange}) => {
         alignItems="center"
         padding={1}
         >
-            <div>
+            <FormControl style={{width:"100%"}}>
                 <InputLabel id="car-status">Status</InputLabel>
                 <Select
                     labelId="car-status"
@@ -33,7 +33,7 @@ const CarStatusFilter = ({getChange}) => {
                     <MenuItem value={'SellerRequest'}>SellerRequest</MenuItem>
                     <MenuItem value={'BuyerRequest'}>BuyerRequest</MenuItem>
                 </Select>
-            </div>
+            </FormControl>
         </Box>
     );
 };
