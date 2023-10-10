@@ -17,6 +17,7 @@ import {useNavigate} from 'react-router-dom'
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import { apiBaseUrl } from 'config';
+import UploadButton from 'components/UploadButton/Uploadbutton';
 
 
 function Copyright(props) {
@@ -242,34 +243,14 @@ function SignUp() {
                 />
               </Grid>
               {isSwitch ? null : (
-              <Grid item xs={12}>
-                <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={12} style={{display:"flex", justifyContent:"space-between"}}>
+                <Grid item xs={12} sm={6} style={{ display:"inline-block"}}>
                   <Typography variant="p" color="inherit" align="justify" noWrap>
-                    사업자등록증
+                    구매자 / 판매자
                   </Typography>
                 </Grid>
-                <Grid item xs={4}>
-                  <Badge badgeContent={4} color="primary">
-                    <MailIcon color="action" />
-                  </Badge>
-                </Grid>
-                <Grid item xs={4}>
-                  <input type="file" name="image" onChange={handleImageUpload} />
-                  {/*  시도 1
-                  <Button
-                    onRowClick={handleImageClick}
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    이미지 업로드
-                  </Button>
-                  <input type="file"
-                    ref={fileInput}
-                    onChange={handleImageUpload}
-                    style={{ display: "none" }} /> 
-                    */}
-
+                <Grid item xs={12} sm={6} style={{display:"inline-block", paddingLeft:"47px"}}>
+                  <UploadButton handleImageUpload={handleImageUpload} />
                 </Grid>
               </Grid> )}
 

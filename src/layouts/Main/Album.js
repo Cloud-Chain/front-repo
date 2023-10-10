@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import baner from 'assets/images/cloudchain.png';
 import dayjs from 'dayjs';
 import { apiBaseUrl } from 'config';
 // import jsonData from '../../assets/data.json';
@@ -138,7 +139,7 @@ function Album() {
     };
   return (
     <ThemeProvider theme={defaultTheme}>
-      <AppBar position="relative" style={{backgroundColor: '#6439ff'}} >
+      {/* <AppBar position="relative" style={{backgroundColor: '#6439ff'}} >
         <Toolbar>
           <DirectionsCarIcon sx={{ mr: 2 }} />
           <CarCrashIcon sx={{ mr: 2 }} />
@@ -146,21 +147,19 @@ function Album() {
             Cloud Chain 중고차 거래 시스템
           </Typography>
         </Toolbar>
-      </AppBar>
-
+      </AppBar> */}
+      <img src={baner} style={{width:"1100px"}} alt="Cloudchain main baner"  />
       <main>
         <Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
-              <Button variant="contained" onClick={handleSellerClick} size="large" style={{ backgroundColor: '#6439ff' }} endIcon={<SendIcon />}>
-                판매자 조회하기
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
+            {/* <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
+              <img src={baner} alt="Car back"  />
+            </Grid> */}
+            {/* <Grid item xs={12} sm={6} style={{ textAlign: 'center', padding: '16px' }}>
               <Button variant="contained" onClick={handleCarClick} size="large" style={{ backgroundColor: '#6439ff' }} endIcon={<SendIcon />}>
                 차량 조회하기
               </Button>
-            </Grid>
+            </Grid> */}
             {mergeData.map((rowData, index) => (
               <Grid item key={rowData.id} xs={12} sm={6} md={4}>
                 <Card

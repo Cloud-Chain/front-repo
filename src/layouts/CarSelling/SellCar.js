@@ -16,10 +16,10 @@ const SellCar = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center' }}>
+    <div style={{ display: 'flex', marginTop:"60px", flexDirection: 'column', alignItems: 'center', justifyContent:'center' }}>
       <TransactionProcess />
       <SellTransactionTemplate open={open} handleClose={handleClose} />
-      <Button type="submit" variant="contained" color="success" onClick={handleOpen} style={{width: 300,margin: 20}}>
+      <Button type="submit" variant="contained" color="success" onClick={handleOpen} style={{width: 300,margin: 20, marginTop:"40px"}}>
         차량 판매하기
       </Button>
     </div>
