@@ -29,34 +29,40 @@ export default function DashboardTable({ data, header, selectable=false, fontWei
                             }}
                         >
                             {selectable && <td><input type="checkbox" checked={selectedRow === rowIndex} readOnly /></td>}
-                            {header.map((col, colIndex) => (
-                                <td key={colIndex} style={{fontWeight: fontWeight}}>
-                                    {col.toLowerCase().split(' ').join('') === 'nodeflavor' ? (
-                                        <Tooltip 
-                                            title={
-                                                <>
-                                                    <div className='details'>CPU: {row.flavorDetails?.cpu}</div>
-                                                    <div className='details'>RAM: {row.flavorDetails?.ram}</div>
-                                                    <div className='details'>Storage: {row.flavorDetails?.storage}</div>
-                                                </>
-                                            }
-                                            placement='right'
-                                            componentsProps={{
-                                                tooltip: {
-                                                  sx: {
-                                                    bgcolor: 'grey',
-                                                    color: 'white'
-                                                  },
-                                                },
-                                            }}
-                                        >
-                                            <span>{row[col.toLowerCase().split(' ').join('')]}</span>
-                                        </Tooltip>
-                                    ) : (
-                                        row[col.toLowerCase().split(' ').join('')]
-                                    )}
-                                </td>
-                            ))}
+                            {header.map((col, colIndex) => {
+                                const columnData = row[col.toLowerCase().split(' ').join('')];
+
+                                return (
+                                    <td key={colIndex} style={{fontWeight: fontWeight}}>
+                                        {col.toLowerCase().split(' ').join('') === 'nodeflavor' ? (
+                                            <Tooltip 
+                                                title={
+                                                    <>
+                                                        <div className='details'>CPU: {row.flavorDetails?.cpu}</div>
+                                                        <div className='details'>RAM: {row.flavorDetails?.ram}</div>
+                                                        <div className='details'>Storage: {row.flavorDetails?.storage}</div>
+                                                    </>
+                                                }
+                                                placement='right'
+                                                componentsProps={{
+                                                    tooltip: {
+                                                    sx: {
+                                                        bgcolor: 'grey',
+                                                        color: 'white'
+                                                    },
+                                                    },
+                                                }}
+                                            >
+                                                <span>{columnData}</span>
+                                            </Tooltip>
+                                        ) : col.toLowerCase() === 'monitor' && columnData.includes(":") ? (
+                                            <a href={`http://${columnData}`} target="_blank" rel="noopener noreferrer">{columnData}</a>
+                                        ) : (
+                                            columnData
+                                        )}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>

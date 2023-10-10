@@ -9,6 +9,7 @@ export default function Cluster() {
     const [selectedCluster, setSelectedCluster] = useState(null);
     const [open, setOpen] = useState(false);
     const [images, setImages] = useState([]);
+    const [refresh, setRefresh] = useState(0);
     const [formData, setFormData] = useState({
         clusterName: '',
         workerNodeCount: '',
@@ -58,10 +59,11 @@ export default function Cluster() {
             if (resp.status === 200) {
                 const transformedData = resp.data.map(cluster => {
                     let monitorLink = cluster.bastionIP ? `${cluster.bastionIP}:3000` : "Pending"; 
+                    const nodeName = images.find(image => image.uuid === cluster.nodeImage)?.name || cluster.nodeImage;
                     
                     return {
                         clustername: cluster.clusterName,
-                        nodeimage: cluster.nodeImage,
+                        nodeimage: nodeName,
                         nodeflavor: `k8s-${cluster.clusterName}-flavor`, 
                         flavorDetails: {
                             cpu: `${cluster.flavorVcpu} Cores`,
@@ -128,6 +130,7 @@ export default function Cluster() {
             <div className='buttonContainer'>
                 <Button variant="contained" onClick={handleOpen} >클러스터 생성</Button>
                 <Button variant="contained" onClick={handleDelete} style={{ marginLeft: '10px' }}>클러스터 삭제</Button>
+                <Button variant="contained" onClick={() => setRefresh(prev => prev + 1)} style={{ marginLeft: '10px' }} >Refresh</Button>
             </div>
             <DashboardTable 
                 data={clusters} 
