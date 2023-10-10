@@ -8,7 +8,6 @@ import { apiBaseUrl } from 'config';
 
 
 const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
-  console.log(jsonData)
   const [loading, setLoading] = useState(false);
   const [assignee, setAssignee] = useState({
     name: localStorage.getItem("UserName"),
@@ -184,14 +183,14 @@ const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDateTimePicker
-                      label="지불 일자"
-                      value={transactionDetails.balancePaymentDate}
-                      onChange={(newValue) =>
-                        handleTransactionDetailsChange('balancePaymentDate', newValue)
-                      }
-                      renderInput={(params) => <TextField {...params} />}
-                    />
+                  <DesktopDateTimePicker
+                label="지불 일자"
+                value={transactionDetails.balancePaymentDate || dayjs()}  // Use dayjs() if value is undefined or null
+                onChange={(newValue) =>
+                  handleTransactionDetailsChange('balancePaymentDate', newValue)
+                }
+                renderInput={(params) => <TextField {...params} />}
+              />
                   </LocalizationProvider>
                 </FormControl>
               </Grid>

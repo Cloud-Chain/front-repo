@@ -128,8 +128,7 @@ function GridComponent() {
     console.log(foundTransaction);
     setRow(foundTransaction)
     
-    if (foundTransaction.transactionDetails.transactionState == 'SoldOut' && localStorage.getItem('Org') == 'seller') {
-
+    if (foundTransaction.transactionDetails.transactionState == 'SoldOut' && localStorage.getItem('Org') == 'buyer') {
       handleReviewOpen()
     } else {
       handleOpen()

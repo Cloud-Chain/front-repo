@@ -17,6 +17,9 @@ const CarDetailTemplate = ({ detailData, setDetailData, detailOpen, handleDetail
       };
 
       const flattenObject = (obj, prefix = '') => {
+        if (obj === undefined || obj === null) {
+          return {};
+        }
         return Object.keys(obj).reduce((acc, key) => {
           const propKey = prefix ? `${prefix}.${key}` : key;
           const value = obj[key];

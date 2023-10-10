@@ -3,8 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { useAuth } from 'common/AuthContext';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -32,7 +31,7 @@ const defaultTheme = createTheme();
 
 const SignIn = () => {
   const navigate = useNavigate();
-
+  const {login} = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -65,7 +64,11 @@ const SignIn = () => {
       localStorage.setItem("UserName", json.data.name);
       localStorage.setItem("Org", json.data.org);
       localStorage.setItem("UserId", json.data.id);
-      
+      login({
+        name: json.data.name,
+        org: json.data.org,
+        id: json.data.id,
+      })
       alert("로그인");
       navigate("/profile");
     } else {

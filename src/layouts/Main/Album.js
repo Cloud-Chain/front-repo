@@ -59,7 +59,7 @@ function Album() {
       getCarIxList();
     }, []);
 
-    const getCarList = async () => {
+    const getCarTxList = async () => {
       // console.log(localStorage.getItem('Authorization'));
       const url = `${apiBaseUrl}/contract/get-contract`;
       const json = await (

@@ -41,6 +41,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
   
     const formData = new FormData();
     const inspectDto = {
+      id: row.id,
       inspectionStatus: row.inspectionStatus,
       vehicleBasicInfo: row.vehicleBasicInfo,
       vehicleDetailInfo: row.vehicleDetailInfo,

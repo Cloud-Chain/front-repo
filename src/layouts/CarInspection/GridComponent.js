@@ -76,6 +76,7 @@ function GridComponent() {
   }, [change]);
 
   const columns = [
+    { field: 'id', headerName: '인덱스', flex: 0.5 },
     { field: 'vehicleIdentificationNumber', headerName: '차량 식별번호', flex: 1.5 },
     { field: 'requestDate', headerName: '검수 요청 일자', flex: 1.5 },
     { field: 'vehicleModelName', headerName: '모델명', flex: 1.5 },
