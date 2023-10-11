@@ -3,10 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './slider.css';
-
-import car1 from "../../assets/images/car1.avif";
-import car2 from "../../assets/images/car2.avif";
-import car3 from "../../assets/images/car3.avif";
+import { scale } from "chroma-js";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -54,6 +51,8 @@ const SlickSlider = ({carImages, setCarImages}) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    centerMode: true,
+    outline: false,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />
   };
@@ -65,16 +64,19 @@ const SlickSlider = ({carImages, setCarImages}) => {
   };
 
   const imageStyles = {
-    width: '600px',
+    // width: '600px',
     height: '600px',
-    textAlign: "center",
-    //marginLeft: "space-between",//'200px',
-    objectFit: "cover",
+    justifyContent: "center",
+    transform: scale(1,1),
+    // marginLeft: "200px",//'200px',
+    // marginRight: "200px",
+    objectFit: "scale-down",
   };
 
   return (
     <div>
       <Slider {...settings}>
+        
         <div style={slideStyles}>
           <img src={images.outside} alt="Car outside" style={imageStyles} />
         </div>

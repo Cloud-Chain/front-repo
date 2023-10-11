@@ -284,7 +284,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
                   <TextField
-                    label="튜닝 유무"
+                    label="외판 상태"
                     value={row.vehicleDetailInfo.outerPlate}
                     onChange={(e) =>
                       handleInspectionChange('vehicleDetailInfo', {
@@ -299,7 +299,7 @@ const InspectionTemplate = ({ open, handleClose, row, setRow, change, setChange 
               <Grid item xs={6}>
                   <FormControl fullWidth margin="normal">
                   <TextField
-                    label="외판 상태"
+                    label="프레임 상태"
                     value={row.vehicleDetailInfo.vehicleFrame}
                     onChange={(e) =>
                       handleInspectionChange('vehicleDetailInfo', {

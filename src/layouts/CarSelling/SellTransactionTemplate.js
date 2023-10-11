@@ -198,7 +198,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
           </Box>
           {/* Transaction Details Fields */}
           <Box marginBottom={2}>
-            <h3 style={{margin:'0px'}}>차량 정보</h3>
+            <h3 style={{margin:'0px'}}>차량 판매 정보</h3>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
@@ -266,7 +266,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
             </FormControl>
           </Box>
           <Box marginBottom={2}>
-          <h3>검수 요청 정보</h3>
+          <h3>차량 검수 정보</h3>
           <Grid container spacing={3}>
               <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">

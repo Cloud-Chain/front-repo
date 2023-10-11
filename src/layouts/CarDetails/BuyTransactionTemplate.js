@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField, Stack, Grid, MenuItem } from '@mui/material';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
-import { LocalizationProvider, DesktopDateTimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { apiBaseUrl } from 'config';
@@ -184,7 +184,7 @@ const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DesktopDateTimePicker
+                  <DesktopDatePicker
                 label="지불 일자"
                 value={transactionDetails.balancePaymentDate || dayjs()}  // Use dayjs() if value is undefined or null
                 onChange={(newValue) =>
@@ -198,7 +198,7 @@ const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDateTimePicker
+                    <DesktopDatePicker
                       label="차량 인도 가능일"
                       value={transactionDetails.vehicleDeliveryDate}
                       onChange={(newValue) =>
