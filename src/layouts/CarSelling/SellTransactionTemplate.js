@@ -6,7 +6,7 @@ import { apiBaseUrl } from 'config';
 const SellTransactionTemplate = ({ open, handleClose }) => {
   const [loading, setLoading] = useState(false);
   const [assignor, setAssignor] = useState({
-    name: '',
+    name: localStorage.getItem('UserName'),
     residentRegistrationNumber: '',
     phoneNumber: '',
     address: '',
@@ -164,8 +164,9 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
                 <FormControl fullWidth margin="normal">
                   <TextField
                     label="이름"
-                    value={assignor.name}
-                    onChange={(e) => handleAssignorChange('name', e.target.value)}
+                    value={localStorage.getItem('UserName')}
+                    disabled
+                    // onChange={(e) => handleAssignorChange('name', e.target.value)}
                   />
                 </FormControl>
               </Grid>

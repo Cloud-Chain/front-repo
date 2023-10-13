@@ -11,6 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const gatewayUrl = "http://k8s-default-gateway-9a160cbbd6-1416826963.ap-northeast-2.elb.amazonaws.com";
 
 export default function Navbar() {
+
     const navigate = useNavigate()
     const {user, logout} = useAuth()
     const [anchorEl, setAnchorEl] = useState(null);
@@ -39,7 +40,7 @@ export default function Navbar() {
                 <Box display="flex" justifyContent="flex-end" alignItems="center">
                   {user && user.org && (
                     <Typography variant="caption" style={{ marginRight: '20px', fontSize: '1rem', color: 'white' }}>
-                      org: {user.org}
+                      org: {(user.id === 'inspector') ? user.id : user.org}
                     </Typography>
                   )}
                   {user ? (

@@ -137,7 +137,8 @@ const BuyTransactionTemplate = ({ open, handleClose, jsonData }) => {
                   <TextField
                     label="이름"
                     value={assignee.name}
-                    onChange={(e) => handleAssigneeChange('name', e.target.value)}
+                    disabled
+                    // onChange={(e) => handleAssigneeChange('name', e.target.value)}
                   />
                 </FormControl>
               </Grid>

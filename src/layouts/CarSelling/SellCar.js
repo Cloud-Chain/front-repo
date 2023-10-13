@@ -8,6 +8,11 @@ const SellCar = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
+    const org = localStorage.getItem('Org');
+    if (org === 'buyer') {
+      alert("구매자는 차량 판매를 할 수 없습니다.");
+      return;
+    }
     setOpen(true);
   };
 

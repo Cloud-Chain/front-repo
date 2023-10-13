@@ -45,6 +45,7 @@ const ModifyProfileTemplate = ({ profileData, open, handleClose }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log("submit in mypage modal ", modifiedData);
+        console.log("submit in mypage modal image ", image);
         const formData = new FormData();
         const apiUrl = `${apiBaseUrl}/auth/modify-profile`;
         const headers = {

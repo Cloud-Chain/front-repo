@@ -7,6 +7,8 @@ import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import InspectionTemplate from './InspectionTemplate';
 
 function GridComponent() {
+  
+
   const [loadingData, setLoadingData] = useState(false); // Add this state
   const [inspections, setInspections] = useState([])
   const [data, setData] = useState(jsonData);
