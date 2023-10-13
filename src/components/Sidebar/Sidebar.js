@@ -52,13 +52,13 @@ const Sidebar = () => {
                     <span>차량 검수</span>
                 </li>
             </Link>
-            <p className="title">Community</p>
+            {/* <p className="title">Community</p>
             <Link to="/" style={{ textDecoration: "none"}}>
               <li>
                 <AccountCircleOutlinedIcon className="icon" />
                 <span>리뷰 조회</span>
               </li>
-            </Link>
+            </Link> */}
             <p className="title">USER</p>
             <Link to="/profile" style={{ textDecoration: "none"}}>
               <li>
@@ -66,13 +66,13 @@ const Sidebar = () => {
                 <span>내 프로필</span>
               </li>
             </Link>
-            <Link to="/" style={{ textDecoration: "none"}}>
+            {/* <Link to="/" style={{ textDecoration: "none"}}>
               <li>
                 <ExitToAppIcon className="icon" />
                 <span>로그아웃</span>
               </li>
-            </Link>
-          </ul>
+            </Link> */}
+          </ul> 
         </div>
       </div>
     );

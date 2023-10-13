@@ -7,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import BuyTransactionTemplate from "./BuyTransactionTemplate";
 import ReportTemplate from "./ReportTemplate";
 import CarDetailTemplate from "./CarDetailTemplate";
+import { apiBaseUrl } from 'config';
 
 const CarDetailComponent = ({jsonData, setJsonData}) => {
   const [detailData, setDetailData] = useState([]);
@@ -25,12 +26,14 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
       console.log("Check for localstorage json data  ", jsonObjectData);
       const flattenedData = flattenObject(jsonObjectData);
       setPairStrings(flattenedData);
+      getProfileImage(jsonObjectData.seller);
     }
     // console.log("get Detail data  ", detailData);
     // console.log("Get detail images data  ", images)
   }, [detailData]);
 
   const [data, setData] = useState(JSON.parse(localStorage.getItem("carTransactionData")));
+  const [sellerProfileImg, setSellerProfileImg] = useState("https://pnu-studyhub.s3.ap-northeast-2.amazonaws.com/2023-10-12_defaultUserImg");
   const [open, setOpen] = useState(false);
   const [sellerReportOpen, setSellerReportOpen] = useState(false);
   const [carReportOpen, setCarReportOpen] = useState(false);
@@ -61,6 +64,41 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
   };
   const handleCarReportClose = () => {
     setCarReportOpen(false);
+  };
+
+  async function getProfileImage(userName)  {
+    console.log("판매자 프로필 조회 시작");
+    const token = localStorage.getItem('Authorization');
+    const url = `${apiBaseUrl}/auth/get-profile-name/?username=${userName}`;
+    if (userName != undefined && token != undefined) {
+      console.log("판매자 프로필 조회 요청");
+      await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`,
+          }
+      })
+      .then((response) => {
+          if (!response.ok) {
+              throw new Error("Network response was not ok");
+          }
+          return response.json();
+      })
+      .then((responseData) => {
+          if (responseData.result === 'SUCCESS') {
+              console.log('판매자 프로필 조회 성공:', responseData);
+              setSellerProfileImg(responseData.data.profileImage);
+          } else {
+              throw new Error('판매자 프로필 조회 실패.');
+          }
+      })
+      .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+      });
+    } else {
+      console.log("undefined error");
+    }
+
   };
 
   const containerStyles = {
@@ -122,16 +160,16 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
         <Grid item xs={12} sm={12} style={{ padding: '16px' }}>
           <SlickSlider carImages={images} setCarImages={setImages} />
         </Grid>
-        <Grid item xs={12} sm={4} style={{ padding: '16px' }}>
+        <Grid item xs={12} sm={3} style={{ padding: '16px' }}>
           <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
             <Card style={{height:'100%'}}>
-              <CardContent>
-                <Avatar alt="Profile Image" src="/static/images/avatar/1.jpg" />
+              <CardContent style={{padding:'16px 0px'}}>
+                <Avatar sx={{width:250, height:250}} alt="Seller's Profile Image" src={sellerProfileImg} />
               </CardContent>
             </Card>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={8} style={{ padding: '16px' }}>
+        <Grid item xs={12} sm={9} style={{ padding: '16px' }}>
           <Box sx={{ maxWidth: '100%', margin: '0 auto', border: '2px solid', borderRadius: '10px', height:'100%', borderColor:'grey.300' }}>
             <Card style={{height:'100%'}}>
               <CardContent>

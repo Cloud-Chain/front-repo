@@ -8,7 +8,7 @@ export default function UploadButton({handleImageUpload}) {
     console.log(event.target.files[0]);
     if (event.target.files[0]) {
       handleImageUpload(event);
-      console.log("Check for image upload");
+      console.log("Check for image upload in uploadbutton", event.target.files[0]);
     }
   };
 

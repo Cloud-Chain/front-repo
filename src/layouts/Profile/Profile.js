@@ -23,30 +23,34 @@ function Profile() {
         const token = localStorage.getItem('Authorization');
         const url = `${apiBaseUrl}/auth/get-profile/?userid=${userid}`;
         if (userid != undefined && token != undefined) {
-            const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Authorization': `${token}`,
+            try {
+                const response = await fetch(url, {
+                        method: "GET",
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `${token}`,
+                        }
+                        }).then(res => {
+                            setLoading(false);
+                            if(res.status === 200)
+                                return res.json();
+                            return null;
+                        });
+                console.log("zzzzzz  ", response);
+                if (response !== null) {
+                    if (response.result == 'SUCCESS') {
+                        setProfile(response.data);
                     }
-                    }).then(res => {
-                        setLoading(false);
-                        if(res.status === 200)
-                            return res.json();
-                        return null;
-                    });
-            console.log("zzzzzz  ", response);
-            if (response !== null) {
-                if (response.result == 'SUCCESS') {
-                    setProfile(response.data);
+                } else {
+                    setProfile(null);
                 }
-            } else {
-                setProfile(null);
+            } catch(err) {
+                console.log(err);
             }
         } else {
             setProfile(null);
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     return (
