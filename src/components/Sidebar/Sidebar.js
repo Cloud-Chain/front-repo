@@ -66,12 +66,12 @@ const Sidebar = () => {
                 <span>내 프로필</span>
               </li>
             </Link>
-            {/* <Link to="/" style={{ textDecoration: "none"}}>
+            <Link to="/logout" style={{ textDecoration: "none"}}>
               <li>
                 <ExitToAppIcon className="icon" />
                 <span>로그아웃</span>
               </li>
-            </Link> */}
+            </Link>
           </ul> 
         </div>
       </div>

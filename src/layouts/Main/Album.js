@@ -74,7 +74,7 @@ function Album() {
               priceFilter: false,
               mileageFilter: false,
               model: '',
-              status: 'SoldOut', //'BuyerRequest',
+              status: 'SellerRequest', //'BuyerRequest',
               assignor: '',
               periodRangeStart: dayjs().subtract(1, "y").format('YYYY-MM-DD'),
               periodRangeEnd: dayjs().format('YYYY-MM-DD'),
