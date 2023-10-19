@@ -16,7 +16,7 @@ const InfraSidebar = () => {
       <div className="sidebar">
         <div className="top">
           <Link to="/" style={{ textDecoration: "none" }}>
-            <span className="logo">클라우드체인</span>
+            <span className="logo">Cloud Chain</span>
           </Link>
         </div>
         <hr />
