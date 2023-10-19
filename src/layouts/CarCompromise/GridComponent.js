@@ -13,7 +13,7 @@ function GridComponent() {
   const navigate = useNavigate();
   const [loadingData, setLoadingData] = useState(false); // Add this state
   const [transactions, setTransactions] = useState([])
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([] );
   const [change, setChange] = useState(false)
   const [reviewOpen, setReviewOpen] = useState(false);
   const [open, setOpen] = useState(false);
