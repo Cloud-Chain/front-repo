@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import jsonData from '../../assets/ixData.json';
 import {apiBaseUrl } from 'config';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import { Button } from '@mui/material';
@@ -10,10 +9,11 @@ import ReviewTemplate from './ReviewTemplate';
 
 
 function GridComponent() {
+  const [] = useState()
   const navigate = useNavigate();
   const [loadingData, setLoadingData] = useState(false); // Add this state
   const [transactions, setTransactions] = useState([])
-  const [data, setData] = useState(jsonData);
+  const [data, setData] = useState([]);
   const [change, setChange] = useState(false)
   const [reviewOpen, setReviewOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -66,6 +66,7 @@ function GridComponent() {
 
   useEffect(() => {   
     getNewDatas(setTransactions, data, setData,transactions)
+
   }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
 
   useEffect(() => {
@@ -95,7 +96,7 @@ function GridComponent() {
               backgroundColor: (() => {
                 if (params.row.transactionState === 'SoldOut') {
                   return '#D3D3D3';
-                } else if (params.row.transactionState === `${localStorage.getItem('Org').toString().charAt(0).toUpperCase() + localStorage.getItem('Org').toString().slice(1)}Request`) {
+                } else if (params.row.transactionState === `${getOrgString()}Request`) {
                   return '#FFA726';
                 } else {
                   return '#FFD54F'; // 이 색상은 예시일뿐, 필요에 따라 변경 가능
@@ -110,7 +111,7 @@ function GridComponent() {
             {(() => {
               if (params.row.transactionState === 'SoldOut') {
                 return '거래 완료';
-              } else if (params.row.transactionState === `${localStorage.getItem('Org').toString().charAt(0).toUpperCase() + localStorage.getItem('Org').toString().slice(1)}Request`) {
+              } else if (params.row.transactionState === `${getOrgString()}Request`) {
                 return '처리 중';
               } else {
                 return '조정 요청';
@@ -162,6 +163,15 @@ function GridComponent() {
       <ReviewTemplate open={reviewOpen} handleClose={handleReviewClose} row={row} setRow={setRow} change={change} setChange={setChange} />
     </div>
   );
+}
+
+// 다음은 새로운 함수를 추가하여 'Org'를 처리하는 부분입니다.
+function getOrgString() {
+  const orgValue = localStorage.getItem('Org');
+  // 만약 orgValue가 null이라면 빈 문자열을 반환하도록 처리합니다.
+  let ret = orgValue ? orgValue.toString().charAt(0).toUpperCase() + orgValue.toString().slice(1) : '';
+  console.log(ret);
+  return ret;
 }
 
 function getNewDatas(setTransactions, data, setData, transactions) {
