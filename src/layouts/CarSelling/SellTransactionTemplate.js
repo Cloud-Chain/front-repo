@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Box, FormControl, TextField,Stack,Grid, MenuItem  } from '@mui/material';
 import CircularIndeterminate from 'components/Progress/CircularIndeterminate';
 import { apiBaseUrl } from 'config';
+import {toast} from 'react-toastify'
 
 const SellTransactionTemplate = ({ open, handleClose }) => {
   const [loading, setLoading] = useState(false);
@@ -88,6 +89,7 @@ const SellTransactionTemplate = ({ open, handleClose }) => {
     })
     .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
+        toast.error("잘못된 인증서로 인해 차량 판매가 불가능합니다.")
     })
     .finally(() => {
         setLoading(false);

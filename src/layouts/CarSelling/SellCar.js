@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
-
+import {ToastContainer, toast} from 'react-toastify';
 import TransactionProcess from './TransactionProcess';
 import SellTransactionTemplate from './SellTransactionTemplate';
 
@@ -9,8 +9,9 @@ const SellCar = () => {
 
   const handleOpen = () => {
     const org = localStorage.getItem('Org');
-    if (org === 'buyer') {
-      alert("구매자는 차량 판매를 할 수 없습니다.");
+    console.log(org)
+    if (org !== 'seller') {
+      toast.error("판매자 회원만 차량을 판매할 수 있습니다.")
       return;
     }
     setOpen(true);
@@ -27,6 +28,7 @@ const SellCar = () => {
       <Button type="submit" variant="contained" color="success" onClick={handleOpen} style={{width: 300,margin: 20, marginTop:"40px"}}>
         차량 판매하기
       </Button>
+      <ToastContainer position='top-left'/>
     </div>
   );
 };

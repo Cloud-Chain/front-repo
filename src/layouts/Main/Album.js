@@ -86,7 +86,7 @@ function Album() {
           })
         ).json();
       console.log("tx data  ",json);
-      if (json.result == 'SUCCESS') {
+      if (json !== null && json.result == 'SUCCESS') {
         setTxData(json.data);
         setTxAsync(true);
         // alert("로그인");
@@ -103,7 +103,7 @@ function Album() {
           })
         ).json();
       console.log("ix data  ",json);
-      if (json.result == 'SUCCESS') {
+      if (json !== null && json.result == 'SUCCESS') {
         setIxData(json.data);
         setIxAsync(true);
         // alert("로그인");

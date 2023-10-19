@@ -8,6 +8,7 @@ import BuyTransactionTemplate from "./BuyTransactionTemplate";
 import ReportTemplate from "./ReportTemplate";
 import CarDetailTemplate from "./CarDetailTemplate";
 import { apiBaseUrl } from 'config';
+import {toast} from 'react-toastify'
 
 const CarDetailComponent = ({jsonData, setJsonData}) => {
   const [detailData, setDetailData] = useState([]);
@@ -40,8 +41,14 @@ const CarDetailComponent = ({jsonData, setJsonData}) => {
   const [carDetailOpen, setCarDetailOpen] = useState(false);
   
   const handleOpen = () => {
+    const org = localStorage.getItem('Org');
+    if (org !== 'buyer') {
+      toast.error("구매자 회원만 차량을 판매할 수 있습니다.")
+      return;
+    }
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };

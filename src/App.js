@@ -15,7 +15,10 @@ import Logout from "./layouts/Profile/Logout";
 import Album from "./layouts/Main/Album";
 import InspectionDashboard from "./layouts/CarInspection/InspectionDashboard";
 import Navbar from 'components/Navbar/Navbar';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const theme = createTheme();
+
 
 const App = () => {
   return (
@@ -37,6 +40,7 @@ const App = () => {
             <Route exact path="/logout" element={< Logout/>} />
             <Route exact path="/ix" element={<InspectionDashboard/>}/>
           </Routes>
+          <ToastContainer position="top-left"/>
         </div>
       </div>
     </ThemeProvider>
