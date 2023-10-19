@@ -67,13 +67,13 @@ export default function Dashboard() {
         <div className='dashboard'>
             <div className='titleText'>Dashboard</div>
             <div className='cardGroup'>
-                <Card title="Current Instane / Total Instance" usage={quotaUsage.instance?.currentInstance} 
+                <Card title="Current Instane / Instance Limit" usage={quotaUsage.instance?.currentInstance} 
                     total={quotaUsage.instance?.instanceLimit} unit={""} />
-                <Card title="Current Usage / Total CPU" usage={quotaUsage.cpu?.currentCPU}
+                <Card title="Current Usage / CPU Limit" usage={quotaUsage.cpu?.currentCPU}
                     total={quotaUsage.cpu?.cpuLimit} unit={"Core"} />
-                <Card title="Current Usage / Total RAM" usage={quotaUsage.ram?.currentRAM} 
+                <Card title="Current Usage / RAM Limit" usage={quotaUsage.ram?.currentRAM} 
                     total={quotaUsage.ram?.ramLimit} unit={"GB"} />
-                <Card title="Current Usage / Total Storage" usage={quotaUsage.storage?.currentStorage} 
+                <Card title="Current Usage / Storage Limit" usage={quotaUsage.storage?.currentStorage} 
                     total={quotaUsage.storage?.storageLimit} unit={"GB"} />
             </div>
             <div className='titleText2'>Cluster Deployment</div>

@@ -9,6 +9,7 @@ export default function Cluster() {
     const [selectedCluster, setSelectedCluster] = useState(null);
     const [open, setOpen] = useState(false);
     const [images, setImages] = useState([]);
+    const [iframeURL, setIframeURL] = useState(null);
     const [refresh, setRefresh] = useState(0);
     const [formData, setFormData] = useState({
         clusterName: '',
@@ -26,6 +27,14 @@ export default function Cluster() {
     };
 
     const handleSubmit = () => {
+        if (!formData.clusterName || !formData.nodeImage || 
+            !formData.flavorCpu || !formData.flavorRam || 
+            !formData.flavorDisk || !formData.masterNodeCount || 
+            !formData.workerNodeCount) {
+            alert("유효한 데이터를 입력해주십시오.");
+            return;
+        }
+    
         const requestData = {
             clusterName: formData.clusterName,
             NodeImage: formData.nodeImage,
@@ -35,13 +44,14 @@ export default function Cluster() {
             MasterCount: parseInt(formData.masterNodeCount),
             WorkerCount: parseInt(formData.workerNodeCount)
         };
-
+    
         console.log(requestData);
-
+    
         axios.post("http://192.168.10.20:5000/cluster/create", requestData)
             .then(response => {
                 if (response.status === 201) {
                     console.log(response.data.message);
+                    alert("구축이 진행됩니다"); 
                 } else {
                     console.error("Failed to create cluster");
                 }
@@ -54,43 +64,41 @@ export default function Cluster() {
     };
 
     useEffect(() => {
-        axios.get("http://192.168.10.20:5000/clusters")
-        .then(resp => {
-            if (resp.status === 200) {
-                const transformedData = resp.data.map(cluster => {
-                    let monitorLink = cluster.bastionIP ? `${cluster.bastionIP}:3000` : "Pending"; 
-                    const nodeName = images.find(image => image.uuid === cluster.nodeImage)?.name || cluster.nodeImage;
-                    
-                    return {
-                        clustername: cluster.clusterName,
-                        nodeimage: nodeName,
-                        nodeflavor: `k8s-${cluster.clusterName}-flavor`, 
-                        flavorDetails: {
-                            cpu: `${cluster.flavorVcpu} Cores`,
-                            ram: `${cluster.flavorRam}MB`,
-                            storage: `${cluster.flavorDisk}GB`
-                        },
-                        masternode: cluster.masterCount.toString(),
-                        workernode: cluster.workerCount.toString(),
-                        status: cluster.status,
-                        monitor: monitorLink 
-                    }
-                });
-                setClusters(transformedData);
-            } else {
-                console.error("Failed to fetch clusters");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching clusters:", error);
-        });
-    }, []);
-
-    useEffect(() => {
         axios.get("http://192.168.10.20:5000/images")
-        .then(resp => {
-            if (resp.status === 200) {
-                setImages(resp.data);
+        .then(imageresp => {
+            if (imageresp.status === 200) {
+                setImages(imageresp.data);
+                axios.get("http://192.168.10.20:5000/clusters")
+                .then(resp => {
+                    if (resp.status === 200) {
+                        const transformedData = resp.data.map(cluster => {
+                            let monitorLink = cluster.bastionIP ? `${cluster.bastionIP}:3000` : "Pending"; 
+                            let imageName = imageresp.data.find(image => image.uuid === cluster.nodeImage)?.name || cluster.nodeImage;
+                            
+                            return {
+                                clustername: cluster.clusterName,
+                                nodeimage: imageName,
+                                nodeflavor: `k8s-${cluster.clusterName}-flavor`, 
+                                flavorDetails: {
+                                    cpu: `${cluster.flavorVcpu} Cores`,
+                                    ram: `${cluster.flavorRam}MB`,
+                                    storage: `${cluster.flavorDisk}GB`
+                                },
+                                masternode: cluster.masterCount.toString(),
+                                workernode: cluster.workerCount.toString(),
+                                status: cluster.status,
+                                monitor: monitorLink 
+                            }
+                        });
+                        setClusters(transformedData);
+                    } else {
+                        console.error("Failed to fetch clusters");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching clusters:", error);
+                });
+    
             } else {
                 console.error("Failed to fetch images");
             }
@@ -128,16 +136,17 @@ export default function Cluster() {
         <div className='cluster'>
             <div className='titleText'>Kubernetes Cluster</div>
             <div className='buttonContainer'>
-                <Button variant="contained" onClick={handleOpen} >클러스터 생성</Button>
-                <Button variant="contained" onClick={handleDelete} style={{ marginLeft: '10px' }}>클러스터 삭제</Button>
-                <Button variant="contained" onClick={() => setRefresh(prev => prev + 1)} style={{ marginLeft: '10px' }} >Refresh</Button>
+                <Button variant="contained" onClick={handleOpen} >Create Cluster</Button>
+                <Button variant="contained" onClick={handleDelete} style={{ marginLeft: '10px' }}>Delete Cluster</Button>
+                <Button variant="contained" onClick={() => window.location.reload()} style={{ marginLeft: '10px' }} >Refresh</Button>
             </div>
             <DashboardTable 
                 data={clusters} 
                 header={["Cluster Name", "Node Image", "Node Flavor", "Master Node", "Worker Node", "Status", "Monitor"]} 
                 selectable={true} 
                 fontWeight={400}
-                onRowSelect={(row) => setSelectedCluster(row)}/>
+                onRowSelect={(row) => setSelectedCluster(row)}
+                onMonitorClick={(url) => setIframeURL(url)}/>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -169,6 +178,17 @@ export default function Cluster() {
                     </form>
                 </div>
             </Modal>
+            {iframeURL && (
+                <div style={{marginTop: '30px'}}>
+                    <iframe 
+                        src={iframeURL}
+                        title="Monitoring Dashboard" 
+                        width="100%" 
+                        height="600px" 
+                        frameBorder="0">
+                    </iframe>
+                </div>
+)}
         </div>
     );
 }
