@@ -1,15 +1,8 @@
-import "./InfraSidebar.css";
+import "./InfraSidebar.css"
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import AddIcon from '@mui/icons-material/Add';
 import ListIcon from '@mui/icons-material/List';
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import WidgetsIcon from '@mui/icons-material/Widgets';
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Home, Search, NotificationsNone, MailOutline, BookmarkBorder, ListAlt, PermIdentity } from '@mui/icons-material';
 import { Link } from "react-router-dom";
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-
 
 const InfraSidebar = () => {
     return (
