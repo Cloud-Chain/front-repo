@@ -1,6 +1,6 @@
 .sidebar {
-    width: 150px;
-    min-width: 150px;
+    width: 300px;
+    min-width: 300px;
     padding: 20px 20px 20px 10px; /* 좌측 패딩을 10으로 변경 */
     box-shadow: 0 0 6px hsl(210 14% 90%);
     height : 100vh;
